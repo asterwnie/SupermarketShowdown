@@ -2464,12 +2464,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3f14fe23a92804a84d56cb62bb863f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyDisplayPathGizmos: 0
   player: {fileID: 1655089586}
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 512
   gridWorldSize: {x: 100, y: 100}
-  nodeRadius: 1
+  nodeRadius: 0.5
 --- !u!4 &1412845645
 Transform:
   m_ObjectHideFlags: 0
