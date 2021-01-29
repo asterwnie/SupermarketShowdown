@@ -11,19 +11,16 @@ using UnityEngine;
 public enum PlayerActions
 {
     PICKUP,
-   // TONGUE_GRAB,
-    //ATTACK,
-  //  EQUIP,
+    DROPITEM,
     COUNT
 }
 
 public class PlayerActionManager : MonoBehaviour
 {
-    // USE THIS TO QUICKLY CHANGE INPUT SCHEME
+    // USE THIS TO QUICKLY CHANGE INPUT SCHEME (MAKE SURE TO BIND THEM IN START & HAVING A MATCHING PLAYER ACTION ENUM)
     public static KeyCode[] PlayerInputs = {
-        KeyCode.Space, // pickup (maybe change to same button as attack?)
-       // KeyCode.Mouse1, // tongue grab
-       // KeyCode.Mouse0 // attack (do a check to see which weapon you are using)
+        KeyCode.Mouse0, // pickup
+        KeyCode.Mouse1 // drop item
         };
 
     // lookup table of keycode to find which action it should do (gets bound at runtime)
@@ -47,7 +44,7 @@ public class PlayerActionManager : MonoBehaviour
     {
         // bind controls to actions
         PlayerControls.Add(PlayerInputs[(int)PlayerActions.PICKUP], PlayerActions.PICKUP);
-//        PlayerControls.Add(PlayerInputs[(int)PlayerActions.TONGUE_GRAB], PlayerActions.TONGUE_GRAB);
+        PlayerControls.Add(PlayerInputs[(int)PlayerActions.DROPITEM], PlayerActions.DROPITEM);
        // PlayerControls.Add(PlayerInputs[(int)PlayerActions.ATTACK], PlayerActions.ATTACK);
 
 
@@ -104,16 +101,13 @@ public class PlayerActionManager : MonoBehaviour
                     // ..........
                 }
                 break;
-                /*
-            case PlayerActions.TONGUE_GRAB:
-                // CURRENTLY HANDLED BY UpdateFrogInteract()
-                // draw a ray from the player's mouse pos to the item
-                // if the ray is hitting a grabbable item, slingshot it back to the player
-                // after reaching the player, play holding animation
-                // store this item as player holded item
-                // parent item to player hands
-                // hold the item
+                
+            case PlayerActions.DROPITEM:
+                float timeElapsed = 0;
+                StartCoroutine(DropOrThrowItem(KeyCode.Mouse1, timeElapsed));
                 break;
+
+                /*
             case PlayerActions.ATTACK:
                 // make sure player isn't holding anything
                 // check what kind of weapon it is
@@ -150,6 +144,60 @@ public class PlayerActionManager : MonoBehaviour
 
         // play holding animation
         // ...............
+    }
+
+    IEnumerator DropOrThrowItem(KeyCode key, float timeElapsed)
+    {
+        if (isHoldingItem) // drop the item
+        {
+            bool hasPerformedAction = false;
+            Vector2 mouseStartPos = Input.mousePosition;
+            Vector2 mouseReleasePos;
+            while (!hasPerformedAction)
+            {
+                if (Input.GetKey(key))
+                {
+                    timeElapsed += Time.deltaTime;
+                }
+
+                if (timeElapsed >= 1f) // if held for one second, can start dragging to throw item
+                {
+                    // spawn throwing UI
+
+                    // do throw on release
+                    if (Input.GetKeyUp(KeyCode.Mouse1))
+                    {
+                        // calculate throwing angle
+                        mouseReleasePos = Input.mousePosition;
+                        Vector2 displacement = new Vector2(mouseReleasePos.x - mouseStartPos.x, mouseReleasePos.y - mouseStartPos.y);
+                        float angle = Vector2.SignedAngle(Vector2.down, displacement);
+                        Debug.Log("Angle to throw: " + angle);
+                        hasPerformedAction = true;
+
+
+                        //hide throwing ui
+                    }
+                }
+                else if (Input.GetKeyUp(KeyCode.Mouse1)) // do a simple drop on release
+                {
+                    // re-enable that item's trigger zone
+                    currentHeldItem.GetComponent<Collider>().enabled = true;
+                    currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+
+                    // un-store this item as player holded item
+                    isHoldingItem = false;
+                    currentHeldItem = null;
+
+                    // play default animation
+                    // ..........
+                    hasPerformedAction = true;
+                }
+
+                yield return null;
+            }
+        }
+        yield return null;
+        
     }
 
     private void OnTriggerEnter(Collider other)

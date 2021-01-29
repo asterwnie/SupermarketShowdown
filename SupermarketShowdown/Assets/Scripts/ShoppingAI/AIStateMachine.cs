@@ -20,6 +20,7 @@ public abstract class AIState : MonoBehaviour
     public abstract void OnExit();
     public abstract AIState UpdateState(); // returns a new state if the state has changed
     public abstract void OnTriggerAction(Collider other);
+    public abstract void OnTriggerStayAction(Collider other);
 
     public AIStates GetStateType() { return type; }
     protected AIStates type;

@@ -9,6 +9,7 @@ public class MomAIStateMachine : AIStateMachine
 {
     public GameObject triggerZone;
     public GameObject cartObj;
+    public GameObject cartHandle;
     public List<GameObject> groceryObjectives = new List<GameObject>();
     public List<GameObject> itemsCollected = new List<GameObject>();
     public LayerMask layerMask;
@@ -17,11 +18,15 @@ public class MomAIStateMachine : AIStateMachine
     public GameObject thoughtBubbleUI;
     public Text thoughtBubbleText;
 
-    string currentStateString;
+    public GameObject playerThoughtBubbleUI;
+    public Text playerThoughtBubbleText;
+
+    //string currentStateString;
 
     private void Start()
     {
         StartStateMachine();
+        playerThoughtBubbleUI.SetActive(false);
         thoughtBubbleUI.SetActive(false);
     }
 
@@ -34,6 +39,7 @@ public class MomAIStateMachine : AIStateMachine
             currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
         }
 
+        /*
         switch (currentState)
         {
             case AIStates.WALKING_TO:
@@ -56,7 +62,7 @@ public class MomAIStateMachine : AIStateMachine
                 break;
         }
 
-        Debug.Log("MomAI Current state: " + currentStateString);
+        Debug.Log("MomAI Current state: " + currentStateString);*/
     }
 
     public override void StartStateMachine()
@@ -71,6 +77,11 @@ public class MomAIStateMachine : AIStateMachine
     private void OnTriggerEnter(Collider other)
     {
         currentStateObject.OnTriggerAction(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        currentStateObject.OnTriggerStayAction(other);
     }
 }
 
@@ -166,6 +177,14 @@ public class ShoppingState : AIState
         }
     }
 
+    public override void OnTriggerStayAction(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            playerNearby = true;
+        }
+    }
+
 }
 
 public class InspectingState : AIState
@@ -241,6 +260,11 @@ public class InspectingState : AIState
         
     }
 
+    public override void OnTriggerStayAction(Collider other)
+    {
+
+    }
+
 }
 
 public class PursueState : AIState
@@ -248,13 +272,14 @@ public class PursueState : AIState
     GameObject player;
     PathfindingUnit pathfindingUnit;
     Vector3 targetLocation;
-    bool caughtPlayer;
+    public bool caughtPlayer;
+    bool isPathingToCart;
 
     float momHeightOffset = 2f;
     float playerHeightOffset = 1f;
 
     public float timeRunning;
-    public float maxTimeRunning = 5f; // how long the mom will pursue before getting tired
+    public float maxTimeRunning = 7f; // how long the mom will pursue before getting tired
 
     private void Start()
     {
@@ -263,6 +288,7 @@ public class PursueState : AIState
         player = GameObject.FindGameObjectWithTag("Player");
         pathfindingUnit = GetComponent<PathfindingUnit>();
         timeRunning = 0f;
+        isPathingToCart = false;
         OnEntrance();
     }
 
@@ -285,11 +311,8 @@ public class PursueState : AIState
     public override void OnExit()
     {
         isInited = false;
-
         ((MomAIStateMachine)stateMachine).thoughtBubbleUI.SetActive(false);
-
-        //pathfindingUnit.speed = pathfindingUnit.speed / 2;
-        StartCoroutine(DestroyAfterDelay(6f));
+        StartCoroutine(DestroyAfterDelay(10f));
     }
 
     public override AIState UpdateState()
@@ -299,19 +322,35 @@ public class PursueState : AIState
         if(caughtPlayer)
         {
             // mom walks the player back to the cart
-            float step = GetComponent<PathfindingUnit>().speed * Time.deltaTime * 2;
-            player.transform.position = Vector3.MoveTowards(player.transform.position, gameObject.transform.position, step);
-            //gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position, step);
-            pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
-            
-            if(Vector3.Distance(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
+            if (!isPathingToCart)
             {
-                GivePlayerControlAfterDelay(3f);
+                pathfindingUnit.speed *= 2f;
+                isPathingToCart = true;
+                pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
+            }
+            StartCoroutine(PlayerFollowMom());
+
+            if (Vector3.Distance(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
+            {
+                pathfindingUnit.speed /= 2f;
+                StartCoroutine(GivePlayerControlAfterDelay(6f));
                 OnExit();
-                //return new InspectingState();
-                var nextState = gameObject.AddComponent<PatrolState>();
-                nextState.stateMachine = this.stateMachine;
-                return nextState;
+                
+                // keep shopping if not done; if not, enter lose state
+                if(((MomAIStateMachine)stateMachine).itemsCollected.Count != ((MomAIStateMachine)stateMachine).groceryObjectives.Count)
+                {
+                    var nextState = gameObject.AddComponent<InspectingState>();
+                    nextState.stateMachine = this.stateMachine;
+                    return nextState;
+                }
+                else
+                {
+                    // *************** GAME LOSE STATE *****************
+                    var nextState = gameObject.AddComponent<PatrolState>();
+                    nextState.stateMachine = this.stateMachine;
+                    return nextState;
+                }
+                
             }
         }
         else
@@ -319,8 +358,7 @@ public class PursueState : AIState
             if (timeRunning < maxTimeRunning)
             {
                 // if the kid is in sight after reaching the last seen position, continue pursuing the kid
-                // if (Vector3.Distance(gameObject.transform.position, targetLocation) < 1f)
-                //{
+
                 float radiusBoost = 0f;
                 // do a raycast to see if the mom can see the kid
                 Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
@@ -330,13 +368,19 @@ public class PursueState : AIState
                 {
                     if (hit.collider.tag != "Player")
                     {
-                        radiusBoost = 0;
-                        // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
-                        OnExit();
-                        //return new InspectingState(); // if moving onto a next state, return a new state
-                        var nextState = gameObject.AddComponent<InspectingState>();
-                        nextState.stateMachine = this.stateMachine;
-                        return nextState;
+                        // keep pursuing last player seen location
+                        if (Vector3.Distance(gameObject.transform.position, targetLocation) < 1f)
+                        {
+                            // if player wasn't found at last seen location, go to inspecting state
+
+                            radiusBoost = 0;
+                            // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
+                            OnExit();
+                            //return new InspectingState(); // if moving onto a next state, return a new state
+                            var nextState = gameObject.AddComponent<InspectingState>();
+                            nextState.stateMachine = this.stateMachine;
+                            return nextState;
+                        }
                     }
                     else if (hit.collider.tag == "Player")
                     {
@@ -344,10 +388,9 @@ public class PursueState : AIState
                         //Debug.Log("Player spotted!");
                         // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
                         pathfindingUnit.PathTo(player.transform);
+                        targetLocation = player.transform.position;
                     }
                 }
-                    
-                //}
             }
             else
             {
@@ -374,10 +417,42 @@ public class PursueState : AIState
         }
     }
 
+    public override void OnTriggerStayAction(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            caughtPlayer = true;
+            player.GetComponent<Movement>().canMove = false;
+        }
+    }
+
     IEnumerator GivePlayerControlAfterDelay(float seconds)
     {
-        yield return new WaitForSeconds(seconds);
+        float timeElapsed = 0;
+
+        while (timeElapsed < seconds)
+        {
+            timeElapsed += Time.deltaTime;
+            if(timeElapsed > seconds - (seconds - 1.5f))
+            {
+                Quaternion lookAtCartAngle = Quaternion.LookRotation(new Vector3(((MomAIStateMachine)stateMachine).cartObj.transform.position.x, player.transform.position.y, ((MomAIStateMachine)stateMachine).cartObj.transform.position.z) - player.transform.position, Vector3.up);
+                player.transform.rotation = Quaternion.Lerp(player.transform.rotation, lookAtCartAngle, Time.deltaTime * 2f);
+            }
+                //player.transform.LookAt(new Vector3(((MomAIStateMachine)stateMachine).cartObj.transform.position.x, player.transform.position.y, ((MomAIStateMachine)stateMachine).cartObj.transform.position.z));
+            yield return null;
+        }
+
+        ((MomAIStateMachine)stateMachine).playerThoughtBubbleUI.SetActive(true);
         player.GetComponent<Movement>().canMove = true;
+
+        yield return new WaitForSeconds(3f);
+        ((MomAIStateMachine)stateMachine).playerThoughtBubbleUI.SetActive(false);
+    }
+
+    IEnumerator PlayerFollowMom()
+    {
+        yield return new WaitForSeconds(0.5f);
+        player.GetComponent<PathfindingUnit>().PathTo(((MomAIStateMachine)stateMachine).cartHandle.transform); // scoot to the side so mom can keep walking
     }
 
 }
@@ -454,6 +529,11 @@ public class PatrolState : AIState
         //{
           //  reachedTarget = true;
         //}
+    }
+
+    public override void OnTriggerStayAction(Collider other)
+    {
+
     }
 
 }
