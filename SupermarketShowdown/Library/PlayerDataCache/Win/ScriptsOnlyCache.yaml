@@ -2,10 +2,11 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - CircleSync
-    - CollectThemAll
     - DynamicCamera3D
     - ExitOnEscape
+    - FaceCamera
     - Grid
+    - MomAIStateMachine
     - Movement
     - PathRequestManager
     - Pathfinding
@@ -64,6 +65,8 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
     UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.ContentSizeFitter
@@ -78,7 +81,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
-    Assets/Scenes/MainTestScene.unity:
+    Assets/Scenes/MomAITest.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -146,79 +149,85 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11990}
     - Class: 114
-      Script: {instanceID: 12290}
+      Script: {instanceID: 12068}
     - Class: 114
-      Script: {instanceID: 12334}
+      Script: {instanceID: 12292}
     - Class: 114
-      Script: {instanceID: 12394}
+      Script: {instanceID: 12336}
     - Class: 114
-      Script: {instanceID: 12612}
+      Script: {instanceID: 12396}
     - Class: 114
-      Script: {instanceID: 12622}
+      Script: {instanceID: 12514}
     - Class: 114
-      Script: {instanceID: 12832}
+      Script: {instanceID: 12614}
     - Class: 114
-      Script: {instanceID: 12878}
+      Script: {instanceID: 12624}
     - Class: 114
-      Script: {instanceID: 12934}
+      Script: {instanceID: 12834}
     - Class: 114
-      Script: {instanceID: 12968}
+      Script: {instanceID: 12880}
     - Class: 114
-      Script: {instanceID: 13014}
+      Script: {instanceID: 12936}
     - Class: 114
-      Script: {instanceID: 13040}
+      Script: {instanceID: 12970}
     - Class: 114
-      Script: {instanceID: 13118}
+      Script: {instanceID: 13016}
     - Class: 114
-      Script: {instanceID: 13234}
+      Script: {instanceID: 13042}
     - Class: 114
-      Script: {instanceID: 13284}
+      Script: {instanceID: 13238}
     - Class: 114
-      Script: {instanceID: 13310}
+      Script: {instanceID: 13288}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13314}
     - Class: 114
-      Script: {instanceID: 13616}
+      Script: {instanceID: 13340}
     - Class: 114
       Script: {instanceID: 13620}
     - Class: 114
-      Script: {instanceID: 13680}
+      Script: {instanceID: 13624}
     - Class: 114
-      Script: {instanceID: 13700}
+      Script: {instanceID: 13684}
     - Class: 114
-      Script: {instanceID: 13828}
+      Script: {instanceID: 13704}
     - Class: 114
-      Script: {instanceID: 13858}
+      Script: {instanceID: 13832}
     - Class: 114
-      Script: {instanceID: 13866}
+      Script: {instanceID: 13862}
     - Class: 114
-      Script: {instanceID: 14172}
+      Script: {instanceID: 13870}
     - Class: 114
-      Script: {instanceID: 14238}
+      Script: {instanceID: 14176}
     - Class: 114
-      Script: {instanceID: 14246}
+      Script: {instanceID: 14242}
     - Class: 114
-      Script: {instanceID: 14468}
+      Script: {instanceID: 14250}
     - Class: 114
-      Script: {instanceID: 14592}
+      Script: {instanceID: 14472}
     - Class: 114
-      Script: {instanceID: 14654}
+      Script: {instanceID: 14596}
     - Class: 114
-      Script: {instanceID: 14702}
+      Script: {instanceID: 14658}
     - Class: 114
-      Script: {instanceID: 14820}
+      Script: {instanceID: 14706}
     - Class: 114
-      Script: {instanceID: 14850}
+      Script: {instanceID: 14824}
     - Class: 114
-      Script: {instanceID: 14908}
+      Script: {instanceID: 14854}
     - Class: 114
-      Script: {instanceID: 14910}
+      Script: {instanceID: 14912}
     - Class: 114
-      Script: {instanceID: 14964}
+      Script: {instanceID: 14914}
     - Class: 114
-      Script: {instanceID: 15084}
+      Script: {instanceID: 14942}
     - Class: 114
-      Script: {instanceID: 15090}
+      Script: {instanceID: 14968}
+    - Class: 114
+      Script: {instanceID: 15088}
+    - Class: 114
+      Script: {instanceID: 15094}
+    - Class: 114
+      Script: {instanceID: 24788}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -504,6 +513,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: Vignette
+  - hash:
+      serializedVersion: 2
+      Hash: 4e7cf37538e6ff910dff66c43a61b342
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MomAIStateMachine
   - hash:
       serializedVersion: 2
       Hash: bd3cf68c8964d3c66d1c43f4f98508c9
@@ -1236,7 +1251,13 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FaceCamera
   platform: 5
   scenePathNames:
-  - Assets/Scenes/MainTestScene.unity
-  playerPath: C:/Users/miche/Documents/SupermarketShowdown/Builds/alpha1.27.21/MonoBleedingEdge/SupermarketShowdown.exe
+  - Assets/Scenes/MomAITest.unity
+  playerPath: C:/Users/miche/Documents/SupermarketShowdown/Builds/alpha1.28.21/MoreObjectives/SupermarketShowdown.exe

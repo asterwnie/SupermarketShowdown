@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // NOTE THAT CURRENTLY STATES DO NOT CLEAN THEMSELVES UP AFTER THEY'RE DONE..
 
@@ -11,12 +12,17 @@ public class MomAIStateMachine : AIStateMachine
     public List<GameObject> groceryObjectives = new List<GameObject>();
     public List<GameObject> itemsCollected = new List<GameObject>();
     public LayerMask layerMask;
+    public float sightRadius = 30f;
+
+    public GameObject thoughtBubbleUI;
+    public Text thoughtBubbleText;
 
     string currentStateString;
 
     private void Start()
     {
         StartStateMachine();
+        thoughtBubbleUI.SetActive(false);
     }
 
     private void Update()
@@ -37,20 +43,20 @@ public class MomAIStateMachine : AIStateMachine
                 currentStateString = "Shopping";
                 break;
             case AIStates.THINKING:
-                currentStateString = "Thinking";
+                currentStateString = "Thinking...";
                 break;
             case AIStates.PURSUE:
-                currentStateString = "Pursue";
+                currentStateString = "Pursue Player";
                 break;
             case AIStates.PATROL:
-                currentStateString = "Patrol";
+                currentStateString = "Patrol Store";
                 break;
             case AIStates.IDLE:
                 currentStateString = "Idle";
                 break;
         }
 
-       // Debug.Log("MomAI Current state: " + currentStateString);
+        Debug.Log("MomAI Current state: " + currentStateString);
     }
 
     public override void StartStateMachine()
@@ -180,6 +186,8 @@ public class InspectingState : AIState
         // play mom's inspecting animation
 
         // spawn little thinking bubble above head
+        ((MomAIStateMachine)stateMachine).thoughtBubbleUI.SetActive(true);
+        ((MomAIStateMachine)stateMachine).thoughtBubbleText.text = "..?";
 
         isInited = true;
     }
@@ -192,6 +200,7 @@ public class InspectingState : AIState
 
         // destroy thinking bubble
         // .....
+        ((MomAIStateMachine)stateMachine).thoughtBubbleUI.SetActive(false);
 
         StartCoroutine(DestroyAfterDelay(0.5f));
     }
@@ -244,8 +253,8 @@ public class PursueState : AIState
     float momHeightOffset = 2f;
     float playerHeightOffset = 1f;
 
-    float timeRunning;
-    float maxTimeRunning = 20f; // how long the mom will pursue before getting tired
+    public float timeRunning;
+    public float maxTimeRunning = 5f; // how long the mom will pursue before getting tired
 
     private void Start()
     {
@@ -261,10 +270,12 @@ public class PursueState : AIState
     {
         // play shocked animation & spawn exclamation point above head
         //...
+        ((MomAIStateMachine)stateMachine).thoughtBubbleUI.SetActive(true);
+        ((MomAIStateMachine)stateMachine).thoughtBubbleText.text = "!!!";
 
 
         // run towards player
-        pathfindingUnit.speed = pathfindingUnit.speed * 2;
+        //pathfindingUnit.speed = pathfindingUnit.speed * 2;
         pathfindingUnit.PathTo(player.transform);
         targetLocation = player.transform.position;
 
@@ -275,7 +286,9 @@ public class PursueState : AIState
     {
         isInited = false;
 
-        pathfindingUnit.speed = pathfindingUnit.speed / 2;
+        ((MomAIStateMachine)stateMachine).thoughtBubbleUI.SetActive(false);
+
+        //pathfindingUnit.speed = pathfindingUnit.speed / 2;
         StartCoroutine(DestroyAfterDelay(6f));
     }
 
@@ -286,17 +299,17 @@ public class PursueState : AIState
         if(caughtPlayer)
         {
             // mom walks the player back to the cart
-            float step = GetComponent<PathfindingUnit>().speed * Time.deltaTime;
+            float step = GetComponent<PathfindingUnit>().speed * Time.deltaTime * 2;
             player.transform.position = Vector3.MoveTowards(player.transform.position, gameObject.transform.position, step);
             //gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position, step);
             pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
             
-            if(Vector3.Distance(player.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
+            if(Vector3.Distance(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
             {
                 GivePlayerControlAfterDelay(3f);
                 OnExit();
                 //return new InspectingState();
-                var nextState = gameObject.AddComponent<InspectingState>();
+                var nextState = gameObject.AddComponent<PatrolState>();
                 nextState.stateMachine = this.stateMachine;
                 return nextState;
             }
@@ -306,32 +319,35 @@ public class PursueState : AIState
             if (timeRunning < maxTimeRunning)
             {
                 // if the kid is in sight after reaching the last seen position, continue pursuing the kid
-                if (Vector3.Distance(gameObject.transform.position, targetLocation) < 1f)
+                // if (Vector3.Distance(gameObject.transform.position, targetLocation) < 1f)
+                //{
+                float radiusBoost = 0f;
+                // do a raycast to see if the mom can see the kid
+                Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
+                RaycastHit hit;
+                Physics.Raycast(ray, out hit, ((MomAIStateMachine)stateMachine).sightRadius + radiusBoost, ((MomAIStateMachine)stateMachine).layerMask);
+                if (hit.collider != null)
                 {
-                    // do a raycast to see if the mom can see the kid
-                    Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
-                    RaycastHit hit;
-                    Physics.Raycast(ray, out hit, 100f, ((MomAIStateMachine)stateMachine).layerMask);
-                    if (hit.collider != null)
+                    if (hit.collider.tag != "Player")
                     {
-                        if (hit.collider.tag != "Player")
-                        {
-                            // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
-                            OnExit();
-                            //return new InspectingState(); // if moving onto a next state, return a new state
-                            var nextState = gameObject.AddComponent<InspectingState>();
-                            nextState.stateMachine = this.stateMachine;
-                            return nextState;
-                        }
-                        else if (hit.collider.tag == "Player")
-                        {
-                            Debug.Log("Player spotted!");
-                            // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
-                            pathfindingUnit.PathTo(player.transform);
-                        }
+                        radiusBoost = 0;
+                        // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
+                        OnExit();
+                        //return new InspectingState(); // if moving onto a next state, return a new state
+                        var nextState = gameObject.AddComponent<InspectingState>();
+                        nextState.stateMachine = this.stateMachine;
+                        return nextState;
                     }
-                    
+                    else if (hit.collider.tag == "Player")
+                    {
+                        radiusBoost = 100f;
+                        //Debug.Log("Player spotted!");
+                        // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
+                        pathfindingUnit.PathTo(player.transform);
+                    }
                 }
+                    
+                //}
             }
             else
             {
@@ -372,6 +388,7 @@ public class PatrolState : AIState
     PathfindingUnit pathfindingUnit;
     GameObject player;
     public GameObject currentTarget;
+    public float distanceToTarget;
     float momHeightOffset = 2f;
     float playerHeightOffset = 1f;
 
@@ -401,11 +418,12 @@ public class PatrolState : AIState
 
     public override AIState UpdateState()
     {
+        distanceToTarget = Vector3.Distance(gameObject.transform.position, currentTarget.transform.position);
 
         // if the mom can see the kid, immediately stop patroling and pursue player
         Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
         RaycastHit hit;
-        Physics.Raycast(ray, out hit, 100f, ((MomAIStateMachine)stateMachine).layerMask);
+        Physics.Raycast(ray, out hit, ((MomAIStateMachine)stateMachine).sightRadius, ((MomAIStateMachine)stateMachine).layerMask);
         if (hit.collider != null)
         {
             if(hit.collider.tag == "Player")
@@ -417,13 +435,13 @@ public class PatrolState : AIState
                 nextState.stateMachine = this.stateMachine;
                 return nextState;
             }
-            
-        }
-        else if (Vector3.Distance(gameObject.transform.position, currentTarget.transform.position) < 1f) // if cannot see the kid, keep patroling around
-        {
-            // fetch patrol route points and pick a random one to go to
-            currentTarget = patrolPoints[Mathf.RoundToInt(Random.value * patrolPoints.Length)];
-            pathfindingUnit.PathTo(currentTarget.transform);
+            else if (Vector3.Distance(gameObject.transform.position, currentTarget.transform.position) < 1f) // if cannot see the kid, keep patroling around
+            {
+                // fetch patrol route points and pick a random one to go to
+                currentTarget = patrolPoints[Mathf.RoundToInt(Random.value * patrolPoints.Length)];
+                pathfindingUnit.PathTo(currentTarget.transform);
+            }
+
         }
 
         // if continuing this state, return itself
