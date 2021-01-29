@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// NOTE THAT CURRENTLY STATES DO NOT CLEAN THEMSELVES UP AFTER THEY'RE DONE..
-
 public class MomAIStateMachine : AIStateMachine
 {
     public GameObject triggerZone;

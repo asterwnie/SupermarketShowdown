@@ -1405,6 +1405,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   speed: 5
+  turnSpeed: 3
+  turnDst: 1
+  stoppingDst: 1
 --- !u!1 &372737812
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,6 +2103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 360744141}
   speed: 5
+  turnSpeed: 3
+  turnDst: 1
+  stoppingDst: 1
 --- !u!114 &687582921
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+// CODE FROM SEBASTIAN LAGUE's A* PATHFINDING SERIES (https://www.youtube.com/channel/UCmtyQOKKmrMVaKuRXz02jbQ)
+
 public class PathRequestManager : MonoBehaviour
 {
 
