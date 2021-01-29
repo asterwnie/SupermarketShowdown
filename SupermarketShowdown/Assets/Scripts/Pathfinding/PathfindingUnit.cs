@@ -10,14 +10,20 @@ public class PathfindingUnit : MonoBehaviour
 
     void Start()
     {
-        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        //PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+       // if(Input.GetKeyDown(KeyCode.Space))
+         //   PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
 
+    }
+
+    public void PathTo(Transform targetObj)
+    {
+        target = targetObj;
+        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)

@@ -1,0 +1,484 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+// NOTE THAT CURRENTLY STATES DO NOT CLEAN THEMSELVES UP AFTER THEY'RE DONE..
+
+public class MomAIStateMachine : AIStateMachine
+{
+    public GameObject triggerZone;
+    public GameObject cartObj;
+    public List<GameObject> groceryObjectives = new List<GameObject>();
+    public List<GameObject> itemsCollected = new List<GameObject>();
+    public LayerMask layerMask;
+
+    string currentStateString;
+
+    private void Start()
+    {
+        StartStateMachine();
+    }
+
+    private void Update()
+    {
+        currentState = currentStateObject.GetStateType();
+
+        if (currentStateObject.isInited)
+        {
+            currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
+        }
+
+        switch (currentState)
+        {
+            case AIStates.WALKING_TO:
+                currentStateString = "Walking To";
+                break;
+            case AIStates.SHOPPING:
+                currentStateString = "Shopping";
+                break;
+            case AIStates.THINKING:
+                currentStateString = "Thinking";
+                break;
+            case AIStates.PURSUE:
+                currentStateString = "Pursue";
+                break;
+            case AIStates.PATROL:
+                currentStateString = "Patrol";
+                break;
+            case AIStates.IDLE:
+                currentStateString = "Idle";
+                break;
+        }
+
+       // Debug.Log("MomAI Current state: " + currentStateString);
+    }
+
+    public override void StartStateMachine()
+    {
+
+        //currentStateObject = new ShoppingState();
+        gameObject.AddComponent<ShoppingState>();
+        currentStateObject = GetComponent<ShoppingState>();
+        currentStateObject.stateMachine = this;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        currentStateObject.OnTriggerAction(other);
+    }
+}
+
+public class ShoppingState : AIState
+{
+    public GameObject currentTarget;
+    int currentTargetIndex;
+    bool isWalking;
+    bool reachedItem;
+    bool playerNearby;
+
+    private void Start()
+    {
+        type = AIStates.SHOPPING;
+        isWalking = false;
+        reachedItem = false;
+        playerNearby = false;
+        OnEntrance();
+    }
+
+    public override void OnEntrance()
+    {
+        // pick an item on the shopping list we haven't gotten yet
+        currentTargetIndex = 0;
+        for (int i = currentTargetIndex; i < ((MomAIStateMachine)stateMachine).groceryObjectives.Count; i++)
+        {
+            currentTargetIndex = i;
+            if (((MomAIStateMachine)stateMachine).itemsCollected.Contains(((MomAIStateMachine)stateMachine).groceryObjectives[i]))
+            {
+                //skip if already collected
+                continue;
+            }
+            else
+            {
+                currentTarget = ((MomAIStateMachine)stateMachine).groceryObjectives[i];
+                break;
+            }
+        }
+
+        isInited = true;
+    }
+
+    public override void OnExit()
+    {
+        isInited = false;
+        StartCoroutine(DestroyAfterDelay(0.5f));
+    }
+
+    public override AIState UpdateState()
+    {
+        // walk towards current target
+        if(!isWalking)
+        {
+            isWalking = true;
+            GetComponent<PathfindingUnit>().PathTo(currentTarget.transform);
+        }
+
+        // if moving onto a next state, return a new state
+        if(reachedItem)
+        {
+            OnExit();
+            //return new InspectingState();
+            var nextState = gameObject.AddComponent<InspectingState>();
+            nextState.stateMachine = this.stateMachine;
+            return nextState;
+        }
+
+        if(playerNearby)
+        {
+            OnExit();
+            //return new PursueState();
+            var nextState = gameObject.AddComponent<PursueState>();
+            nextState.stateMachine = this.stateMachine;
+            return nextState;
+        }
+
+        // if continuing this state, return itself
+        return this;
+    }
+
+    public override void OnTriggerAction(Collider other)
+    {
+        // if we've reached our grocery item, change state
+        if(((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        {
+            reachedItem = true;
+            ((MomAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
+        }
+
+        if(other.gameObject.tag == "Player")
+        {
+            playerNearby = true;
+        }
+    }
+
+}
+
+public class InspectingState : AIState
+{
+    public float timeElapsed;
+    public float timeToWait;
+
+    private void Start()
+    {
+        type = AIStates.THINKING;
+        timeElapsed = 0;
+        timeToWait = Random.value * 5f + 1f; // produces a random value between 1 and 6
+        OnEntrance();
+    }
+
+    public override void OnEntrance()
+    {
+        // play mom's inspecting animation
+
+        // spawn little thinking bubble above head
+
+        isInited = true;
+    }
+
+    public override void OnExit()
+    {
+        isInited = false;
+        // after inspecting, switch animations
+        // .....
+
+        // destroy thinking bubble
+        // .....
+
+        StartCoroutine(DestroyAfterDelay(0.5f));
+    }
+
+    public override AIState UpdateState()
+    {
+        timeElapsed += Time.deltaTime;
+
+        if(timeElapsed >= timeToWait)
+        {
+            // if there's still more shopping to do, continue shopping
+            if(((MomAIStateMachine)stateMachine).groceryObjectives.Count != ((MomAIStateMachine)stateMachine).itemsCollected.Count)
+            {
+                // switch to shopping after waiting for a bit
+                OnExit();
+                //return new ShoppingState(); // if moving onto a next state, return a new state
+                var nextState = gameObject.AddComponent<ShoppingState>();
+                nextState.stateMachine = this.stateMachine;
+                return nextState;
+            }
+            else // otherwise, enter patroling state
+            {
+                OnExit();
+                //return new PatrolState(); // if moving onto a next state, return a new state
+                var nextState = gameObject.AddComponent<PatrolState>();
+                nextState.stateMachine = this.stateMachine;
+                return nextState;
+            }
+            
+        }
+
+        // if continuing this state, return itself
+        return this;
+    }
+
+    public override void OnTriggerAction(Collider other)
+    {
+        
+    }
+
+}
+
+public class PursueState : AIState
+{
+    GameObject player;
+    PathfindingUnit pathfindingUnit;
+    Vector3 targetLocation;
+    bool caughtPlayer;
+
+    float momHeightOffset = 2f;
+    float playerHeightOffset = 1f;
+
+    float timeRunning;
+    float maxTimeRunning = 20f; // how long the mom will pursue before getting tired
+
+    private void Start()
+    {
+        type = AIStates.PURSUE;
+        caughtPlayer = false;
+        player = GameObject.FindGameObjectWithTag("Player");
+        pathfindingUnit = GetComponent<PathfindingUnit>();
+        timeRunning = 0f;
+        OnEntrance();
+    }
+
+    public override void OnEntrance()
+    {
+        // play shocked animation & spawn exclamation point above head
+        //...
+
+
+        // run towards player
+        pathfindingUnit.speed = pathfindingUnit.speed * 2;
+        pathfindingUnit.PathTo(player.transform);
+        targetLocation = player.transform.position;
+
+        isInited = true;
+    }
+
+    public override void OnExit()
+    {
+        isInited = false;
+
+        pathfindingUnit.speed = pathfindingUnit.speed / 2;
+        StartCoroutine(DestroyAfterDelay(6f));
+    }
+
+    public override AIState UpdateState()
+    {
+        timeRunning += Time.deltaTime;
+
+        if(caughtPlayer)
+        {
+            // mom walks the player back to the cart
+            float step = GetComponent<PathfindingUnit>().speed * Time.deltaTime;
+            player.transform.position = Vector3.MoveTowards(player.transform.position, gameObject.transform.position, step);
+            //gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position, step);
+            pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
+            
+            if(Vector3.Distance(player.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
+            {
+                GivePlayerControlAfterDelay(3f);
+                OnExit();
+                //return new InspectingState();
+                var nextState = gameObject.AddComponent<InspectingState>();
+                nextState.stateMachine = this.stateMachine;
+                return nextState;
+            }
+        }
+        else
+        {
+            if (timeRunning < maxTimeRunning)
+            {
+                // if the kid is in sight after reaching the last seen position, continue pursuing the kid
+                if (Vector3.Distance(gameObject.transform.position, targetLocation) < 1f)
+                {
+                    // do a raycast to see if the mom can see the kid
+                    Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
+                    RaycastHit hit;
+                    Physics.Raycast(ray, out hit, 100f, ((MomAIStateMachine)stateMachine).layerMask);
+                    if (hit.collider != null)
+                    {
+                        if (hit.collider.tag != "Player")
+                        {
+                            // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
+                            OnExit();
+                            //return new InspectingState(); // if moving onto a next state, return a new state
+                            var nextState = gameObject.AddComponent<InspectingState>();
+                            nextState.stateMachine = this.stateMachine;
+                            return nextState;
+                        }
+                        else if (hit.collider.tag == "Player")
+                        {
+                            Debug.Log("Player spotted!");
+                            // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
+                            pathfindingUnit.PathTo(player.transform);
+                        }
+                    }
+                    
+                }
+            }
+            else
+            {
+                // when mom has gotten tired, go back to pausing
+                OnExit();
+                //return new InspectingState();
+                // if moving onto a next state, return a new state
+                var nextState = gameObject.AddComponent<InspectingState>();
+                nextState.stateMachine = this.stateMachine;
+                return nextState;
+            }
+        }
+
+        // if continuing this state, return itself
+        return this;
+    }
+
+    public override void OnTriggerAction(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            caughtPlayer = true;
+            player.GetComponent<Movement>().canMove = false;
+        }
+    }
+
+    IEnumerator GivePlayerControlAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        player.GetComponent<Movement>().canMove = true;
+    }
+
+}
+
+public class PatrolState : AIState
+{
+    GameObject[] patrolPoints;
+    PathfindingUnit pathfindingUnit;
+    GameObject player;
+    public GameObject currentTarget;
+    float momHeightOffset = 2f;
+    float playerHeightOffset = 1f;
+
+    private void Start()
+    {
+        type = AIStates.PATROL;
+        patrolPoints = GameObject.FindGameObjectsWithTag("PatrolPoints");
+        pathfindingUnit = GetComponent<PathfindingUnit>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        OnEntrance();
+    }
+
+    public override void OnEntrance()
+    {
+        // fetch patrol route points and pick a random one to go to
+        currentTarget = patrolPoints[Mathf.RoundToInt(Random.value * patrolPoints.Length)];
+        pathfindingUnit.PathTo(currentTarget.transform);
+
+        isInited = true;
+    }
+
+    public override void OnExit()
+    {
+        isInited = false;
+        StartCoroutine(DestroyAfterDelay(0.5f));
+    }
+
+    public override AIState UpdateState()
+    {
+
+        // if the mom can see the kid, immediately stop patroling and pursue player
+        Ray ray = new Ray(gameObject.transform.position + new Vector3(0, momHeightOffset, 0), (player.transform.position + new Vector3(0, playerHeightOffset, 0)) - (gameObject.transform.position + new Vector3(0, momHeightOffset, 0)));
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit, 100f, ((MomAIStateMachine)stateMachine).layerMask);
+        if (hit.collider != null)
+        {
+            if(hit.collider.tag == "Player")
+            {
+                // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
+                OnExit();
+                //return new PursueState(); // if moving onto a next state, return a new state
+                var nextState = gameObject.AddComponent<PursueState>();
+                nextState.stateMachine = this.stateMachine;
+                return nextState;
+            }
+            
+        }
+        else if (Vector3.Distance(gameObject.transform.position, currentTarget.transform.position) < 1f) // if cannot see the kid, keep patroling around
+        {
+            // fetch patrol route points and pick a random one to go to
+            currentTarget = patrolPoints[Mathf.RoundToInt(Random.value * patrolPoints.Length)];
+            pathfindingUnit.PathTo(currentTarget.transform);
+        }
+
+        // if continuing this state, return itself
+        return this;
+    }
+
+    public override void OnTriggerAction(Collider other)
+    {
+       // if(other.gameObject == currentTarget)
+        //{
+          //  reachedTarget = true;
+        //}
+    }
+
+}
+
+
+/* TEMPLATE:
+ public class InspectingState : AIState
+{
+
+    private void Start() // awake?
+    {
+        type = AIStates.SHOPPING;
+        OnEntrance();
+    }
+
+    public override void OnEntrance()
+    {
+        
+
+        isInited = true;
+    }
+
+    public override void OnExit()
+    {
+        isInited = false;
+        StartCoroutine(DestroyAfterDelay());
+    }
+
+    public override AIState UpdateState()
+    {
+       
+        // if moving onto a next state, return a new state
+        
+
+        // if continuing this state, return itself
+        return this;
+    }
+
+    public override void OnTriggerAction(Collider other)
+    {
+        
+    }
+
+}
+     */
+
