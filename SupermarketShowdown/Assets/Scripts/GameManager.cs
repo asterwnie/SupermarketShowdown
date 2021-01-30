@@ -59,6 +59,9 @@ public class GameManager : MonoBehaviour
             CheckIfShouldEnterEndState();
         else 
         {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.GetComponent<Movement>().canMove = false;
+            player.GetComponent<PlayerActionManager>().canPerformActions = false;
             // If end state has been reached:
             //Debug.Log("Player won: " + hasWon);
             // execute end-game UI...
