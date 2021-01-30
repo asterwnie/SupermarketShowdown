@@ -7,6 +7,8 @@ TagManager:
   - Terrain
   - PickupItem
   - PatrolPoints
+  - MomNPC
+  - Cart
   layers:
   - Default
   - TransparentFX
@@ -20,8 +22,8 @@ TagManager:
   - Unwalkable
   - NPC
   - Player
-  - 
-  - 
+  - Cart
+  - Objective
   - 
   - 
   - 

@@ -25,8 +25,17 @@ public class PathfindingUnit : MonoBehaviour
     public void PathTo(Transform targetObj)
     {
         target = targetObj;
-        //PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-        StartCoroutine(UpdatePath());
+        PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        //StartCoroutine(UpdatePath());
+    }
+
+    public void ForceStopPathing()
+    {
+        StopCoroutine("FollowPath");
+        StopCoroutine("UpdatePath");
+        path = null;
+        target = null;
+
     }
 
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
@@ -65,9 +74,12 @@ public class PathfindingUnit : MonoBehaviour
 
     IEnumerator FollowPath()
     {
+        if (path == null) // make sure there's a path before you follow it
+            yield break;
 
         bool followingPath = true;
         int pathIndex = 0;
+        
         transform.LookAt(path.lookPoints[0]);
 
         float speedPercent = 1;

@@ -13,6 +13,7 @@ public class CircleSync : MonoBehaviour
     public Camera mainCamera;
     public LayerMask mask;
 
+    public float maxCircleRadius = 0.5f;
     public float circleLerpValue = 2f;
     float currSizeValue = 0;
 
@@ -25,7 +26,7 @@ public class CircleSync : MonoBehaviour
         {
             if (Physics.Raycast(ray, 1000, mask))
             {
-                currSizeValue = Mathf.Lerp(currSizeValue, 1, Time.deltaTime * circleLerpValue);
+                currSizeValue = Mathf.Lerp(currSizeValue, maxCircleRadius, Time.deltaTime * circleLerpValue);
                 mat.SetFloat(sizeID, currSizeValue);
             }
             else

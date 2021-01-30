@@ -92,6 +92,7 @@ public class PlayerActionManager : MonoBehaviour
                     // re-enable that item's trigger zone
                     currentHeldItem.GetComponent<Collider>().enabled = true;
                     currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+                    currentHeldItem.GetComponent<Rigidbody>().AddForce(new Vector3(0, 5f, 0)); // bounce it up a little
 
                     // un-store this item as player holded item
                     isHoldingItem = false;
