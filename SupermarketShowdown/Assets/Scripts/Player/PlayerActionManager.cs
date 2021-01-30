@@ -185,13 +185,16 @@ public class PlayerActionManager : MonoBehaviour
                         currentHeldItem.GetComponent<Collider>().enabled = true;
                         currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
                         isHoldingItem = false;
-                        
-                        
+
+                        Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
+                        Vector3 startingDirection = new Vector3(-mouseDragDistance/100f, playerHeight, 0);
+                        Vector3 result = myRotation * startingDirection;
 
                         //calculate force vector
-                        Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
+                        /*Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
                         Vector3 startingDirection = -Camera.main.transform.forward;
                         Vector3 result = myRotation * startingDirection; // the calculated x/z vector based on the angle
+                        */
                         //float yval
                         Debug.Log("Ball force vector: " + new Vector3(result.x * throwForce, mouseDragDistance / 100f, result.z * throwForce));
                         // CHANGE MOUSE DRAG DIST TO NORMALIZE IT BASED ON SCREEN SIZE LATER
