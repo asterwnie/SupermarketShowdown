@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour
         hasWon = false;
         isChildCaught = false;
         isMomDoneShopping = false;
+
+        // mark all the player objectives so they can use the right texture + spawn particles
+        foreach(GameObject item in playerObjectives)
+        {
+            item.GetComponent<PickupItem>().isObjective = true;
+        }
     }
 
     // Update is called once per frame

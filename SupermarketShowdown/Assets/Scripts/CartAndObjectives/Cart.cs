@@ -8,7 +8,7 @@ public class Cart : MonoBehaviour
     {
         if (other.tag == "PickupItem")
         {
-            if(!GameManager.instance.isChildEatInstantly)
+            if(!GameManager.instance.isChildEatInstantly && other.GetComponent<PickupItem>().isObjective)
             {
                 Debug.Log("Item added to cart!");
                 GameManager.instance.collectedItems.Add(other.gameObject);

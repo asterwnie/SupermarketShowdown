@@ -2332,6 +2332,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831291837}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &864794348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 864794349}
+  m_Layer: 0
+  m_Name: DebugPathParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &864794349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864794348}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &887757198
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,6 +6015,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParentNPC
       objectReference: {fileID: 0}
+    - target: {fileID: 2385368187611245768, guid: 91aa8f2c1fb483447aa4f9c96514ba42,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2385368187611245771, guid: 91aa8f2c1fb483447aa4f9c96514ba42,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6264,8 +6299,19 @@ PrefabInstance:
     - target: {fileID: 8770470134706298199, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: throwForce
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8770470134706298199, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
+        type: 3}
+      propertyPath: spherePathPrefab
+      value: 
+      objectReference: {fileID: 364121419060722878, guid: 9587a0e5962a3bd478e7f52c4273df32,
+        type: 3}
+    - target: {fileID: 8770470134706298199, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
+        type: 3}
+      propertyPath: throwPathParent
+      value: 
+      objectReference: {fileID: 864794348}
     - target: {fileID: 8770470134856700994, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: m_LocalPosition.x

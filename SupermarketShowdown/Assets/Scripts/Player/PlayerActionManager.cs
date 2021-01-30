@@ -31,9 +31,20 @@ public class PlayerActionManager : MonoBehaviour
     public GameObject playerHand;
     public float playerHeight = 3f;
     public float throwForce = 5f;
+    bool isThrowing = false;
+    Vector3 throwVector;
     public bool canPerformActions = true;
     public GameObject currentHeldItem = null;
-    
+
+    public GameObject spherePathPrefab;
+    public GameObject throwPathParent;
+    GameObject[] throwDebugObjects;
+    Vector3 result; // DEBUG
+    float mouseDragDistance; // DEBUG;
+    Vector3 mouseStartPos; //DEBUG
+    Vector2 displacement; //debug
+    float angle;//debug
+
 
     [Header("Item Pickups")]
     public List<GameObject> nearbyItems; // pickup items will add themselves to this list in their OnTriggerEnter and remove when exiting
@@ -50,6 +61,8 @@ public class PlayerActionManager : MonoBehaviour
 
 
         nearbyItems = new List<GameObject>();
+
+        throwDebugObjects = new GameObject[10];
     }
 
     // Update is called once per frame
@@ -71,6 +84,30 @@ public class PlayerActionManager : MonoBehaviour
             currentHeldItem.transform.rotation = Quaternion.Euler(Vector3.zero);
         }
 
+        /*if(isThrowing && throwVector != null)
+        {
+            throwDebugObjects
+        }*/
+
+        if(isThrowing)
+        {
+            displacement = new Vector2(Input.mousePosition.x - mouseStartPos.x, Input.mousePosition.y - mouseStartPos.y);
+            angle = Vector2.SignedAngle(Vector2.up, displacement);
+            mouseDragDistance = Mathf.Abs(Vector2.Distance(mouseStartPos, Input.mousePosition)) / 100f;
+            if (mouseDragDistance >= 10f)
+                mouseDragDistance = 10f; // cap distance
+
+            angle = 360-angle + 180 + 45;
+
+            currentHeldItem.transform.rotation = Quaternion.Euler(0, angle, 0);
+            throwVector = new Vector3(currentHeldItem.transform.forward.x * throwForce, mouseDragDistance, currentHeldItem.transform.forward.z * throwForce);
+
+            DrawThrowArc();
+        }
+        else
+        {
+            throwPathParent.SetActive(false);
+        }
         
     }
 
@@ -153,8 +190,8 @@ public class PlayerActionManager : MonoBehaviour
         if (isHoldingItem) // drop the item
         {
             bool hasPerformedAction = false;
-            Vector2 mouseStartPos = Input.mousePosition;
-            Vector2 mouseReleasePos;
+            mouseStartPos = Input.mousePosition;
+            //Vector2 mouseReleasePos;
             while (!hasPerformedAction)
             {
                 if (Input.GetKey(key))
@@ -164,46 +201,25 @@ public class PlayerActionManager : MonoBehaviour
 
                 if (timeElapsed >= 1f) // if held for one second, can start dragging to throw item
                 {
+                    isThrowing = true;
                     // spawn throwing UI
 
                     // do throw on release
                     if (Input.GetKeyUp(KeyCode.Mouse1))
                     {
-                        // calculate throwing angle
-                        mouseReleasePos = Input.mousePosition;
-                        Vector2 displacement = new Vector2(mouseReleasePos.x - mouseStartPos.x, mouseReleasePos.y - mouseStartPos.y);
-                        float angle = Vector2.SignedAngle(Vector2.down, displacement);
-                        Debug.Log("Angle to throw: " + angle);
-                        hasPerformedAction = true;
-
-                        //calculate throwing force
-                        float mouseDragDistance = Mathf.Abs(Vector2.Distance(mouseStartPos, mouseReleasePos));
-                        Debug.Log("Dragged distance: " + mouseDragDistance);
-                        //if(mouseDragDistance >= 3)
-                        // cap distance ***********
+                        // calculations for throw force are done in update
 
                         currentHeldItem.GetComponent<Collider>().enabled = true;
-                        currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+                        currentHeldItem.transform.position = player.transform.position + new Vector3(0, playerHeight, 0); // place in front of player
                         isHoldingItem = false;
 
-                        Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
-                        Vector3 startingDirection = new Vector3(-mouseDragDistance/100f, playerHeight, 0);
-                        Vector3 result = myRotation * startingDirection;
-
-                        //calculate force vector
-                        /*Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
-                        Vector3 startingDirection = -Camera.main.transform.forward;
-                        Vector3 result = myRotation * startingDirection; // the calculated x/z vector based on the angle
-                        */
-                        //float yval
-                        Debug.Log("Ball force vector: " + new Vector3(result.x * throwForce, mouseDragDistance / 100f, result.z * throwForce));
                         // CHANGE MOUSE DRAG DIST TO NORMALIZE IT BASED ON SCREEN SIZE LATER
-                        result = new Vector3(result.x * throwForce, mouseDragDistance/100f, result.z * throwForce); // add y-value as the drag distance
-                        //currentHeldItem.GetComponent<Rigidbody>().AddForce(result);
-                        currentHeldItem.GetComponent<Rigidbody>().velocity = result;
+
+                        currentHeldItem.GetComponent<Rigidbody>().velocity = throwVector;
                         currentHeldItem = null;
                         hasPerformedAction = true;
 
+                        isThrowing = false;
                         //hide throwing ui
                     }
                 }
@@ -246,7 +262,31 @@ public class PlayerActionManager : MonoBehaviour
         }
     }
 
-
     
+    float timeStep = 0.2f;
+    float timeElapsed = 0;
+    
+    void DrawThrowArc()
+    {
+        if (throwVector != null && isThrowing)
+        {
+            throwPathParent.SetActive(true);
+            for (int i = 0; i < 10; i++)
+            {
+                Vector3 playerHeadPos = new Vector3(transform.position.x, transform.position.y + playerHeight, transform.position.z);
+                timeElapsed += timeStep;
+                Vector3 velocityPos = playerHeadPos + new Vector3((throwVector.x * timeElapsed), (timeElapsed * throwVector.y) + (-5f * Mathf.Pow(timeElapsed, 2f)), (throwVector.z * timeElapsed));
+
+                if(throwDebugObjects[i] == null)
+                    throwDebugObjects[i] = Instantiate(spherePathPrefab, throwPathParent.transform);
+                throwDebugObjects[i].transform.position = velocityPos;
+            }
+            timeElapsed = 0f;
+            return;
+        }
+        
+    }
+
+
 }
 

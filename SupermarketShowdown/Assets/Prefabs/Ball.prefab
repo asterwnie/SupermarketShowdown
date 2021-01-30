@@ -124,4 +124,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: red_ball
+  isObjective: 0
   canPickUp: 1
