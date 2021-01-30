@@ -30,6 +30,7 @@ public class PlayerActionManager : MonoBehaviour
     public GameObject player;
     public GameObject playerHand;
     public float playerHeight = 3f;
+    public float throwForce = 5f;
     public bool canPerformActions = true;
     public GameObject currentHeldItem = null;
     
@@ -175,6 +176,30 @@ public class PlayerActionManager : MonoBehaviour
                         Debug.Log("Angle to throw: " + angle);
                         hasPerformedAction = true;
 
+                        //calculate throwing force
+                        float mouseDragDistance = Mathf.Abs(Vector2.Distance(mouseStartPos, mouseReleasePos));
+                        Debug.Log("Dragged distance: " + mouseDragDistance);
+                        //if(mouseDragDistance >= 3)
+                        // cap distance ***********
+
+                        currentHeldItem.GetComponent<Collider>().enabled = true;
+                        currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+                        isHoldingItem = false;
+                        
+                        
+
+                        //calculate force vector
+                        Quaternion myRotation = Quaternion.AngleAxis(angle, Vector3.up);
+                        Vector3 startingDirection = -Camera.main.transform.forward;
+                        Vector3 result = myRotation * startingDirection; // the calculated x/z vector based on the angle
+                        //float yval
+                        Debug.Log("Ball force vector: " + new Vector3(result.x * throwForce, mouseDragDistance / 100f, result.z * throwForce));
+                        // CHANGE MOUSE DRAG DIST TO NORMALIZE IT BASED ON SCREEN SIZE LATER
+                        result = new Vector3(result.x * throwForce, mouseDragDistance/100f, result.z * throwForce); // add y-value as the drag distance
+                        //currentHeldItem.GetComponent<Rigidbody>().AddForce(result);
+                        currentHeldItem.GetComponent<Rigidbody>().velocity = result;
+                        currentHeldItem = null;
+                        hasPerformedAction = true;
 
                         //hide throwing ui
                     }
@@ -184,6 +209,7 @@ public class PlayerActionManager : MonoBehaviour
                     // re-enable that item's trigger zone
                     currentHeldItem.GetComponent<Collider>().enabled = true;
                     currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+                    currentHeldItem.GetComponent<Rigidbody>().AddForce(new Vector3(0, 5f, 0)); // bounce it up a little
 
                     // un-store this item as player holded item
                     isHoldingItem = false;
