@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &864794348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 864794349}
+  m_Layer: 0
+  m_Name: ThrowPath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &864794349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864794348}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.8, y: 0, z: 16.400002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8770470134856700994}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8770470134706298202
 GameObject:
   m_ObjectHideFlags: 0
@@ -47,8 +77,12 @@ MonoBehaviour:
   player: {fileID: 8770470134856700998}
   playerHand: {fileID: 8770470134763436513}
   playerHeight: 2
+  throwForce: 10
   canPerformActions: 1
   currentHeldItem: {fileID: 0}
+  spherePathPrefab: {fileID: 364121419060722878, guid: 9587a0e5962a3bd478e7f52c4273df32,
+    type: 3}
+  throwPathParent: {fileID: 864794348}
   nearbyItems: []
   currentWeapon: {fileID: 0}
 --- !u!135 &8770470134706298200
@@ -121,7 +155,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8770470134856700998}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -18.8, y: 0, z: -16.400002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -129,6 +163,7 @@ Transform:
   - {fileID: 8770470134763436512}
   - {fileID: 8770470134706298201}
   - {fileID: 8770470136364725800}
+  - {fileID: 864794349}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
