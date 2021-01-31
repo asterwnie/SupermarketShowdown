@@ -11,7 +11,6 @@ using UnityEngine;
 public enum PlayerActions
 {
     PICKUP,
-    DROPITEM,
     COUNT
 }
 
@@ -20,7 +19,7 @@ public class PlayerActionManager : MonoBehaviour
     // USE THIS TO QUICKLY CHANGE INPUT SCHEME (MAKE SURE TO BIND THEM IN START & HAVING A MATCHING PLAYER ACTION ENUM)
     public static KeyCode[] PlayerInputs = {
         KeyCode.Mouse0, // pickup
-        KeyCode.Mouse0 // drop item
+        //KeyCode.Mouse0 // drop item
         };
 
     // lookup table of keycode to find which action it should do (gets bound at runtime)
@@ -56,7 +55,7 @@ public class PlayerActionManager : MonoBehaviour
     {
         // bind controls to actions
         PlayerControls.Add(PlayerInputs[(int)PlayerActions.PICKUP], PlayerActions.PICKUP);
-        PlayerControls.Add(PlayerInputs[(int)PlayerActions.DROPITEM], PlayerActions.DROPITEM);
+        //PlayerControls.Add(PlayerInputs[(int)PlayerActions.DROPITEM], PlayerActions.DROPITEM);
        // PlayerControls.Add(PlayerInputs[(int)PlayerActions.ATTACK], PlayerActions.ATTACK);
 
 
@@ -127,6 +126,9 @@ public class PlayerActionManager : MonoBehaviour
                 }
                 else if (isHoldingItem) // drop the item
                 {
+                    float timeElapsed = 0;
+                    StartCoroutine(DropOrThrowItem(KeyCode.Mouse0, timeElapsed));
+                    /*
                     // re-enable that item's trigger zone
                     currentHeldItem.GetComponent<Collider>().enabled = true;
                     currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
@@ -138,13 +140,10 @@ public class PlayerActionManager : MonoBehaviour
     
                     // play default animation
                     // ..........
+                    */
                 }
                 break;
-                
-            case PlayerActions.DROPITEM:
-                float timeElapsed = 0;
-                StartCoroutine(DropOrThrowItem(KeyCode.Mouse0, timeElapsed));
-                break;
+
         }
     }
 
