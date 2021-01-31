@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{514EBA49-C4D6-4778-8F24-DF834837C27F}" SchemaVersion="97">
+	<DynamicDialogue>
+		<WorkUnit Name="Default Work Unit" ID="{514EBA49-C4D6-4778-8F24-DF834837C27F}" PersistMode="Standalone">
+			<ChildrenList>
+				<DialogueEvent Name="Play_Mom_Bark" ID="{EFCC2099-D2B4-436F-B956-852882720297}">
+					<ArgumentList>
+						<ArgumentRef Name="Mother_Aggro" ID="{0298CE1D-1D3B-4FFE-98FB-E047834E2A6A}"/>
+					</ArgumentList>
+					<EntryList>
+						<Entry>
+							<Path>
+								<PathElementRef Name="Mother_Aggro" ID="{0298CE1D-1D3B-4FFE-98FB-E047834E2A6A}"/>
+							</Path>
+							<AudioNodeInfo>
+								<NoObject Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+						<Entry>
+							<Path>
+								<PathElementRef Name="Level_2" ID="{6136C008-5D1D-4FBE-A6E5-9A985D42B0F1}"/>
+							</Path>
+							<AudioNodeInfo>
+								<AudioNodeRef Name="Mom_Bark_Angry" ID="{8E74451F-FA5E-4089-AF92-C0C69A1CDB41}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}" Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+						<Entry>
+							<Path>
+								<PathElementRef Name="False" ID="{1EF09A06-48B5-4DD9-8366-8C0F08881375}"/>
+							</Path>
+							<AudioNodeInfo>
+								<AudioNodeRef Name="Mom_Bark_Passive" ID="{8E45ADA8-0660-4DAF-B5D2-A11E33472DA2}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}" Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+						<Entry>
+							<Path>
+								<PathElementRef Name="Level_1" ID="{BEE4E678-FCCD-40E5-BCD6-DD67C763A768}"/>
+							</Path>
+							<AudioNodeInfo>
+								<AudioNodeRef Name="Mom_Bark_Transition" ID="{8778578D-6269-4768-AA3D-5A91B44D5877}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}" Platform="Linked"/>
+							</AudioNodeInfo>
+						</Entry>
+					</EntryList>
+				</DialogueEvent>
+			</ChildrenList>
+		</WorkUnit>
+	</DynamicDialogue>
+</WwiseDocument>

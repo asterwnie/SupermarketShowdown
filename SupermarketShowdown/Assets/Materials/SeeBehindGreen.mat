@@ -87,7 +87,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadowMappingAmount: 0.5
     - _ReceiveShadows: 1
-    - _Size: 2.202981e-21
+    - _Size: 0.49999946
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -105,5 +105,5 @@ Material:
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 1}
     - _IndirectLightConstColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _OutlineColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-    - _Position: {r: 0.4970684, g: 0.44606078, b: 34.299828, a: 0}
+    - _Position: {r: 0.51456016, g: 0.40906686, b: 32.152485, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
