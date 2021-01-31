@@ -9,6 +9,7 @@ public class MomAIStateMachine : AIStateMachine
     bool canInit;
 
     //public GameObject triggerZone;
+    public Animator animationController;
     public GameObject cartObj;
     public GameObject cartHandle;
     public int groceriesToCollect = 5;
@@ -17,6 +18,9 @@ public class MomAIStateMachine : AIStateMachine
     public LayerMask layerMask;
     public float sightRadius = 30f;
     public bool canKeepRunning = true;
+
+    public float walkSpeed = 4f;
+    public float runSpeed = 5f;
 
     public GameObject thoughtBubbleUI;
     public Text thoughtBubbleText;
@@ -137,6 +141,8 @@ public class ShoppingState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Walking");
+        GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
         type = AIStates.SHOPPING;
         isWalking = false;
         reachedItem = false;
@@ -207,7 +213,7 @@ public class ShoppingState : AIState
     public override void OnTriggerAction(Collider other)
     {
         // if we've reached our grocery item, change state
-        if(((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        if(!(((MomAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
         {
             reachedItem = true;
             ((MomAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
@@ -221,6 +227,11 @@ public class ShoppingState : AIState
 
     public override void OnTriggerStayAction(Collider other)
     {
+        if (!(((MomAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        {
+            reachedItem = true;
+            ((MomAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
+        }
         if (other.gameObject.tag == "Player")
         {
             playerNearby = true;
@@ -236,6 +247,7 @@ public class InspectingState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Thinking");
         type = AIStates.THINKING;
         timeElapsed = 0;
         //timeToWait = Random.value * 3f + 3f; // produces a random value between 3 and 6
@@ -318,6 +330,7 @@ public class PursueState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
         type = AIStates.PURSUE;
         caughtPlayer = false;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -364,7 +377,8 @@ public class PursueState : AIState
             // mom walks the player back to the cart
             if (!isPathingToCart)
             {
-                //pathfindingUnit.speed *= 1.5f;
+                ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Walking");
+                GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
                 isPathingToCart = true;
                 pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
                 StartCoroutine(PlayerFollowMom());
@@ -420,6 +434,7 @@ public class PursueState : AIState
 
                             // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
                             pathfindingUnit.ForceStopPathing();
+                            GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
                             OnExit();
                             var nextState = gameObject.AddComponent<InspectingState>();
                             nextState.stateMachine = this.stateMachine;
@@ -429,9 +444,11 @@ public class PursueState : AIState
                     else if (hit.collider.tag == "Player")
                     {
                         radiusBoost = 100f;
+                        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
+                        GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).runSpeed;
                         //Debug.Log("Player spotted!");
                         // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
-                        
+
                         pathfindingUnit.PathTo(player.transform);
                         targetLocation = player.transform.position;
                         

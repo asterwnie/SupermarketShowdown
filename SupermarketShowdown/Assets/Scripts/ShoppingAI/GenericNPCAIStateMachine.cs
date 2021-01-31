@@ -137,7 +137,7 @@ public class GenericShoppingState : AIState
     public override void OnTriggerAction(Collider other)
     {
         // if we've reached our grocery item, change state
-        if (((GenericNPCAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        if (!(((GenericNPCAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((GenericNPCAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
         {
             reachedItem = true;
             ((GenericNPCAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
@@ -146,7 +146,11 @@ public class GenericShoppingState : AIState
 
     public override void OnTriggerStayAction(Collider other)
     {
-
+        if (!(((GenericNPCAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((GenericNPCAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        {
+            reachedItem = true;
+            ((GenericNPCAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
+        }
     }
 
 }

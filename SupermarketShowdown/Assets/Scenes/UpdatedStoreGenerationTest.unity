@@ -744,8 +744,33 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc60138627c054946a2aa7d03abd4687,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc60138627c054946a2aa7d03abd4687, type: 3}
+--- !u!1 &336003647 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cc60138627c054946a2aa7d03abd4687,
+    type: 3}
+  m_PrefabInstance: {fileID: 336003646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &336003648
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336003647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3604861494000191839, guid: cc60138627c054946a2aa7d03abd4687, type: 3}
 --- !u!1 &345717134
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,8 +2393,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.1975007, y: 0.9999998, z: 2.2861319}
-  m_Center: {x: 0.44653583, y: 0, z: -3.4425297}
+  m_Size: {x: 2.9623244, y: 0.9999999, z: 2.2861319}
+  m_Center: {x: 1.0641197, y: 0, z: -3.4425294}
 --- !u!1 &1354162175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,8 +3142,33 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Environment
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc60138627c054946a2aa7d03abd4687,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc60138627c054946a2aa7d03abd4687, type: 3}
+--- !u!1 &1746113992 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cc60138627c054946a2aa7d03abd4687,
+    type: 3}
+  m_PrefabInstance: {fileID: 1746113991}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1746113993
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746113992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3604861494000191839, guid: cc60138627c054946a2aa7d03abd4687, type: 3}
 --- !u!1001 &1768411306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3803,6 +3853,11 @@ PrefabInstance:
       propertyPath: groceriesToCollect
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2385368187611245765, guid: 91aa8f2c1fb483447aa4f9c96514ba42,
+        type: 3}
+      propertyPath: animationController
+      value: 
+      objectReference: {fileID: 2385368186954334734}
     - target: {fileID: 2385368187611245768, guid: 91aa8f2c1fb483447aa4f9c96514ba42,
         type: 3}
       propertyPath: m_Name
@@ -3870,6 +3925,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91aa8f2c1fb483447aa4f9c96514ba42, type: 3}
+--- !u!1 &2385368186954334733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2385368186948759770, guid: 91aa8f2c1fb483447aa4f9c96514ba42,
+    type: 3}
+  m_PrefabInstance: {fileID: 2385368186954334732}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2385368186954334734
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2385368186954334733}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c27dcd7e810ff474a9040c72c352ec3e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3022061550850163052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3960,6 +4040,16 @@ PrefabInstance:
         type: 3}
       propertyPath: gridWorldSize.x
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766569548094922680, guid: aa96ffc0cc005634b85a93bc1705e3f2,
+        type: 3}
+      propertyPath: displayGridGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766569548094922680, guid: aa96ffc0cc005634b85a93bc1705e3f2,
+        type: 3}
+      propertyPath: nodeRadius
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5766569548094922681, guid: aa96ffc0cc005634b85a93bc1705e3f2,
         type: 3}
