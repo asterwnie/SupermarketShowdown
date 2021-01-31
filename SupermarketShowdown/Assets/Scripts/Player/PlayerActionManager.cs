@@ -20,7 +20,7 @@ public class PlayerActionManager : MonoBehaviour
     // USE THIS TO QUICKLY CHANGE INPUT SCHEME (MAKE SURE TO BIND THEM IN START & HAVING A MATCHING PLAYER ACTION ENUM)
     public static KeyCode[] PlayerInputs = {
         KeyCode.Mouse0, // pickup
-        KeyCode.Mouse1 // drop item
+        KeyCode.Mouse0 // drop item
         };
 
     // lookup table of keycode to find which action it should do (gets bound at runtime)
@@ -31,6 +31,7 @@ public class PlayerActionManager : MonoBehaviour
     public GameObject playerHand;
     public float playerHeight = 3f;
     public float throwForce = 5f;
+    public float throwingDelay = 1f;
     bool isThrowing = false;
     Vector3 throwVector;
     public bool canPerformActions = true;
@@ -142,7 +143,7 @@ public class PlayerActionManager : MonoBehaviour
                 
             case PlayerActions.DROPITEM:
                 float timeElapsed = 0;
-                StartCoroutine(DropOrThrowItem(KeyCode.Mouse1, timeElapsed));
+                StartCoroutine(DropOrThrowItem(KeyCode.Mouse0, timeElapsed));
                 break;
         }
     }
@@ -188,13 +189,13 @@ public class PlayerActionManager : MonoBehaviour
                     timeElapsed += Time.deltaTime;
                 }
 
-                if (timeElapsed >= 1f) // if held for one second, can start dragging to throw item
+                if (timeElapsed >= throwingDelay) // if held for one second, can start dragging to throw item
                 {
                     isThrowing = true;
                     // spawn throwing UI
 
                     // do throw on release
-                    if (Input.GetKeyUp(KeyCode.Mouse1))
+                    if (Input.GetKeyUp(KeyCode.Mouse0))
                     {
                         // calculations for throw force are done in update
 
@@ -212,7 +213,7 @@ public class PlayerActionManager : MonoBehaviour
                         //hide throwing ui
                     }
                 }
-                else if (Input.GetKeyUp(KeyCode.Mouse1)) // do a simple drop on release
+                else if (Input.GetKeyUp(KeyCode.Mouse0)) // do a simple drop on release
                 {
                     // re-enable that item's trigger zone
                     currentHeldItem.GetComponent<Collider>().enabled = true;

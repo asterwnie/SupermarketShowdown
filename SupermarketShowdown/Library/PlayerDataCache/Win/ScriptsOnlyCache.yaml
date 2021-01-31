@@ -472,7 +472,7 @@ ScriptsOnlyBuild:
     className: DepthOfField
   - hash:
       serializedVersion: 2
-      Hash: 09ad52d6dbbe8a9161da02431f524c3b
+      Hash: 68e4c9c70adad629d6af1fa49f3cbf5c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PickupItem
@@ -538,7 +538,7 @@ ScriptsOnlyBuild:
     className: Vignette
   - hash:
       serializedVersion: 2
-      Hash: 83eb3347b557c2a8a3bbcbd38a36b122
+      Hash: d118896fe74382877c1c4c9627fe75e9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MomAIStateMachine
@@ -994,7 +994,7 @@ ScriptsOnlyBuild:
     className: ColorAdjustments
   - hash:
       serializedVersion: 2
-      Hash: a20e2d6162db8691c6ca1237825df975
+      Hash: f517eb7b6fcc8e6e59c552eddf529f6a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -1144,7 +1144,7 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
-      Hash: e9c7ce027ebd49dd47fb1584132fff1f
+      Hash: c2c75b87c91023cacec0a15bbb6bbba8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerActionManager
@@ -1286,7 +1286,25 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 4fa8161126be8539add85d4ebb776f3e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GenericNPCAIStateMachine
+  - hash:
+      serializedVersion: 2
+      Hash: e54186f7f2e3b75527fb559e810d0004
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NPCInitializer
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: StoreItem
   platform: 5
   scenePathNames:
   - Assets/Scenes/ChildObjectivesTest.unity
-  playerPath: C:/Users/miche/Documents/SupermarketShowdown/Builds/alpha1.30.21v1/SupermarketShowdown.exe
+  playerPath: C:/Users/miche/Documents/SupermarketShowdown/Builds/alpha1.30.21v2/SupermarketShowdown.exe
