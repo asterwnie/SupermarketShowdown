@@ -11,6 +11,8 @@ public enum AIStates
     THINKING,
     PURSUE,
     PATROL,
+    SLIPPED,
+    CHECKOUT,
     IDLE
 }
 

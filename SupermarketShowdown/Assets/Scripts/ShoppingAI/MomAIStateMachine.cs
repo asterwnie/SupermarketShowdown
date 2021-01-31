@@ -5,13 +5,22 @@ using UnityEngine.UI;
 
 public class MomAIStateMachine : AIStateMachine
 {
-    public GameObject triggerZone;
+    bool aiIsInitted;
+    bool canInit;
+
+    //public GameObject triggerZone;
+    public Animator animationController;
     public GameObject cartObj;
     public GameObject cartHandle;
+    public int groceriesToCollect = 5;
     public List<GameObject> groceryObjectives = new List<GameObject>();
     public List<GameObject> itemsCollected = new List<GameObject>();
     public LayerMask layerMask;
     public float sightRadius = 30f;
+    public bool canKeepRunning = true;
+
+    public float walkSpeed = 4f;
+    public float runSpeed = 5f;
 
     public GameObject thoughtBubbleUI;
     public Text thoughtBubbleText;
@@ -21,27 +30,82 @@ public class MomAIStateMachine : AIStateMachine
 
     private void Start()
     {
-        StartStateMachine();
+        // init is delayed (see Update())
+
         playerThoughtBubbleUI.SetActive(false);
         thoughtBubbleUI.SetActive(false);
     }
 
+    void PopulateGroceryList()
+    {
+        //populate grocery list
+        GameObject[] groceries = GameObject.FindGameObjectsWithTag("StoreItem");
+        List<int> indiciesUsed = new List<int>();
+        if (groceries.Length < groceriesToCollect)
+            groceriesToCollect = groceries.Length;
+        for (int i = 0; i < groceriesToCollect; i++)
+        {
+            int rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            while (indiciesUsed.Contains(rand))
+            {
+                rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            }
+            indiciesUsed.Add(rand);
+
+            if (GameObject.FindGameObjectWithTag("PathfindingGrid").GetComponent<Grid>().NodeFromWorldPoint(groceries[rand].GetComponent<PickupItem>().targetTransform.position).walkable)
+                groceryObjectives.Add(groceries[rand]);
+        }
+    }
+
     private void Update()
     {
+        if (!aiIsInitted && GameManager.instance.isFinishedInit)
+        {
+            aiIsInitted = true;
+            canInit = true;
+        }
+
+        if (canInit)
+        {
+            canInit = false; // don't init twice
+            PopulateGroceryList();
+            StartStateMachine();
+        }
+
+        if(aiIsInitted)
+        {
+            GameManager.instance.momAIState = currentState;
+
+            if (currentStateObject != null)
+            {
+                currentState = currentStateObject.GetStateType();
+
+                if (currentStateObject.isInited)
+                    currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
+            }
+            else
+            {
+                currentState = AIStates.IDLE;
+            }
+
+            // if the player's done, the mom should go to the cart
+            if (canKeepRunning && GameManager.instance.hasCollectedAllItems)
+            {
+                canKeepRunning = false; // stop the state machine
+
+                currentStateObject.isInited = false;
+                currentStateObject = null;
+                //currentState = AIStates.CHECKOUT;
+
+                GameManager.instance.isMomDoneShopping = true;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().canMove = false;
+
+                var nextState = gameObject.AddComponent<PursueState>();
+                nextState.stateMachine = this;
+                currentStateObject = nextState;
+            }
+        }
         
-        GameManager.instance.momAIState = currentState;
-
-        if (currentStateObject != null)
-        {
-            currentState = currentStateObject.GetStateType();
-
-            if (currentStateObject.isInited)
-                currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
-        }
-        else
-        {
-            currentState = AIStates.IDLE;
-        }
         
     }
 
@@ -56,7 +120,7 @@ public class MomAIStateMachine : AIStateMachine
 
     private void OnTriggerEnter(Collider other)
     {
-        if(currentStateObject != null)
+        if (currentStateObject != null)
             currentStateObject.OnTriggerAction(other);
     }
 
@@ -77,6 +141,8 @@ public class ShoppingState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Walking");
+        GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
         type = AIStates.SHOPPING;
         isWalking = false;
         reachedItem = false;
@@ -118,7 +184,7 @@ public class ShoppingState : AIState
         if(!isWalking)
         {
             isWalking = true;
-            GetComponent<PathfindingUnit>().PathTo(currentTarget.transform);
+            GetComponent<PathfindingUnit>().PathTo(currentTarget.GetComponent<PickupItem>().targetTransform);
         }
 
         // if moving onto a next state, return a new state
@@ -147,7 +213,7 @@ public class ShoppingState : AIState
     public override void OnTriggerAction(Collider other)
     {
         // if we've reached our grocery item, change state
-        if(((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        if(!(((MomAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
         {
             reachedItem = true;
             ((MomAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
@@ -161,6 +227,11 @@ public class ShoppingState : AIState
 
     public override void OnTriggerStayAction(Collider other)
     {
+        if (!(((MomAIStateMachine)stateMachine).itemsCollected.Contains(other.gameObject)) && ((MomAIStateMachine)stateMachine).groceryObjectives.Contains(other.gameObject))
+        {
+            reachedItem = true;
+            ((MomAIStateMachine)stateMachine).itemsCollected.Add(other.gameObject);
+        }
         if (other.gameObject.tag == "Player")
         {
             playerNearby = true;
@@ -176,6 +247,7 @@ public class InspectingState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Thinking");
         type = AIStates.THINKING;
         timeElapsed = 0;
         //timeToWait = Random.value * 3f + 3f; // produces a random value between 3 and 6
@@ -234,21 +306,12 @@ public class InspectingState : AIState
             }
             
         }
-
         // if continuing this state, return itself
         return this;
     }
 
-    public override void OnTriggerAction(Collider other)
-    {
-        
-    }
-
-    public override void OnTriggerStayAction(Collider other)
-    {
-
-    }
-
+    public override void OnTriggerAction(Collider other) { }
+    public override void OnTriggerStayAction(Collider other) { }
 }
 
 public class PursueState : AIState
@@ -267,6 +330,7 @@ public class PursueState : AIState
 
     private void Start()
     {
+        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
         type = AIStates.PURSUE;
         caughtPlayer = false;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -305,7 +369,7 @@ public class PursueState : AIState
     {
         timeRunning += Time.deltaTime;
 
-        if(caughtPlayer)
+        if(caughtPlayer || GameManager.instance.hasCollectedAllItems) // if the player is caught or has collected everything
         {
             if (GameManager.instance.isChildEatInstantly)
                 GameManager.instance.isChildCaught = true;
@@ -313,7 +377,8 @@ public class PursueState : AIState
             // mom walks the player back to the cart
             if (!isPathingToCart)
             {
-                //pathfindingUnit.speed *= 1.5f;
+                ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Walking");
+                GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
                 isPathingToCart = true;
                 pathfindingUnit.PathTo(((MomAIStateMachine)stateMachine).cartObj.transform);
                 StartCoroutine(PlayerFollowMom());
@@ -326,10 +391,8 @@ public class PursueState : AIState
                 //OnExit();
 
                 // keep shopping if not done; if not, enter lose state
-                if (((MomAIStateMachine)stateMachine).itemsCollected.Count != ((MomAIStateMachine)stateMachine).groceryObjectives.Count)
+                if (!GameManager.instance.hasCollectedAllItems && ((MomAIStateMachine)stateMachine).itemsCollected.Count != ((MomAIStateMachine)stateMachine).groceryObjectives.Count)
                 {
-                    
-
                     OnExit();
                     var nextState = gameObject.AddComponent<InspectingState>();
                     nextState.stateMachine = this.stateMachine;
@@ -371,6 +434,7 @@ public class PursueState : AIState
 
                             // player is obstructed; mom cannot see player so mom will pause for a bit then go back to shopping
                             pathfindingUnit.ForceStopPathing();
+                            GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).walkSpeed;
                             OnExit();
                             var nextState = gameObject.AddComponent<InspectingState>();
                             nextState.stateMachine = this.stateMachine;
@@ -380,9 +444,11 @@ public class PursueState : AIState
                     else if (hit.collider.tag == "Player")
                     {
                         radiusBoost = 100f;
+                        ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
+                        GetComponent<PathfindingUnit>().speed = ((MomAIStateMachine)stateMachine).runSpeed;
                         //Debug.Log("Player spotted!");
                         // if mom can see player, path towards player (**** should the mom pause for a second before doing this?****)
-                        
+
                         pathfindingUnit.PathTo(player.transform);
                         targetLocation = player.transform.position;
                         
