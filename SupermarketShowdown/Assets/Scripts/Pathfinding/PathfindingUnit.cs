@@ -122,11 +122,12 @@ public class PathfindingUnit : MonoBehaviour
         }
     }
 
+    /*
     public void OnDrawGizmos()
     {
         if (path != null)
         {
             path.DrawWithGizmos();
         }
-    }
+    }*/
 }
