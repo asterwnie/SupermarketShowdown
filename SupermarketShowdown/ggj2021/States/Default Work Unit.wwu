@@ -5,7 +5,7 @@
 			<ChildrenList>
 				<StateGroup Name="Mother_Aggro" ID="{0298CE1D-1D3B-4FFE-98FB-E047834E2A6A}">
 					<PropertyList>
-						<Property Name="DefaultTransitionTime" Type="Real64" Value="0.5"/>
+						<Property Name="DefaultTransitionTime" Type="Real64" Value="0.8"/>
 					</PropertyList>
 					<ChildrenList>
 						<State Name="None" ID="{3F81C4F8-8826-4A5F-929D-0E59C88B2A6C}"/>

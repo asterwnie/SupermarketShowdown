@@ -247,6 +247,9 @@ public class InspectingState : AIState
 
     private void Start()
     {
+        AkSoundEngine.PostEvent("Mom_Bark_Stop", gameObject);
+        AkSoundEngine.PostEvent("Mom_Bark_Passive", gameObject);
+
         ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Thinking");
         type = AIStates.THINKING;
         timeElapsed = 0;
@@ -328,8 +331,20 @@ public class PursueState : AIState
     public float timeRunning;
     public float maxTimeRunning = 7f; // how long the mom will pursue before getting tired
 
+    public int barkRepeat = 1;
+
     private void Start()
     {
+        if(barkRepeat > 1) {
+            AkSoundEngine.PostEvent("Mom_Bark_Stop", gameObject);
+            AkSoundEngine.PostEvent("Mom_Bark_Angry", gameObject);
+        }
+        else
+        {
+            barkRepeat += 1;
+        }
+        
+
         ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
         type = AIStates.PURSUE;
         caughtPlayer = false;
@@ -533,6 +548,9 @@ public class PatrolState : AIState
 
     private void Start()
     {
+        AkSoundEngine.PostEvent("Mom_Bark_Stop", gameObject);
+        AkSoundEngine.PostEvent("Mom_Bark_Transition", gameObject);
+
         type = AIStates.PATROL;
         patrolPoints = GameObject.FindGameObjectsWithTag("PatrolPoints");
         pathfindingUnit = GetComponent<PathfindingUnit>();

@@ -71,7 +71,7 @@ public class PlayerActionManager : MonoBehaviour
         {
             foreach (KeyCode input in PlayerInputs)
             {
-                if(Input.GetKeyDown(input))
+                if (Input.GetKeyDown(input))
                     PerformPlayerAction(PlayerControls[input]);
             }
         }
@@ -122,6 +122,7 @@ public class PlayerActionManager : MonoBehaviour
             case PlayerActions.PICKUP:
                 if(!isHoldingItem && nearbyItems.Count > 0) // if there are pickupable items nearby
                 {
+                    AkSoundEngine.PostEvent("Place_Item", gameObject);
                     HoldItem(nearbyItems[0]);
                 }
                 else if (isHoldingItem) // drop the item
@@ -197,7 +198,7 @@ public class PlayerActionManager : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.Mouse0))
                     {
                         // calculations for throw force are done in update
-
+                        AkSoundEngine.PostEvent("Throw_Item", gameObject);
                         currentHeldItem.GetComponent<Collider>().enabled = true;
                         currentHeldItem.transform.position = player.transform.position + new Vector3(0, playerHeight, 0); // place in front of player
                         isHoldingItem = false;
@@ -214,6 +215,7 @@ public class PlayerActionManager : MonoBehaviour
                 }
                 else if (Input.GetKeyUp(KeyCode.Mouse0)) // do a simple drop on release
                 {
+                    AkSoundEngine.PostEvent("Player_Swipe", gameObject);
                     // re-enable that item's trigger zone
                     currentHeldItem.GetComponent<Collider>().enabled = true;
                     currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player

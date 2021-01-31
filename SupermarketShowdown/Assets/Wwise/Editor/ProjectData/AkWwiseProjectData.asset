@@ -68,7 +68,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 7452f9b723a9334ea52b7637e9e307e0
     GuidInternal: 
-    m_lastTime: -8585894867536666756
+    m_lastTime: -8585894730911060825
     List:
     - name: Barks
       guid: 7dd1e2abb5de7c4da21d6d09e08642aa
@@ -152,6 +152,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 3.473125
       minDuration: 1.936542
+    - name: Mom_Bark_Stop
+      guid: c34e34541f9e5848942d8e600d63ee2e
+      id: 3499760286
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Barks
+        ObjectType: 4
+      - ElementName: Mom_Bark_Stop
+        ObjectType: 3
+      Path: Default Work Unit\Barks\Mom_Bark_Stop
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: Mom_Bark_Transition
       guid: 3eaf14fcd71c8a49aca6d1710c57ad16
       id: 2778148779
@@ -376,7 +390,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 2388f38e0662564581822e58defcba12
     GuidInternal: 
-    m_lastTime: -8585894867432675057
+    m_lastTime: -8585894732684202078
     List:
     - name: Mother_Aggro
       guid: 1dce98023b1dfe4f98fbe047834e2a6a
@@ -469,5 +483,6 @@ MonoBehaviour:
   ExpandedItems:
   - /ggj2021
   - /ggj2021/Events
+  - /ggj2021/Events/Default Work Unit
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

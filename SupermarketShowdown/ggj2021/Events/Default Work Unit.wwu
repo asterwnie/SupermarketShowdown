@@ -61,6 +61,9 @@
 						<Event Name="Play_Music" ID="{44551C1E-E61F-4297-A156-2E0A1D8C7573}">
 							<ChildrenList>
 								<Action Name="" ID="{B2A6294D-B565-498F-A868-4534B543FF31}" ShortID="196589272">
+									<PropertyList>
+										<Property Name="Delay" Type="Real64" Value="2.8"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="GGJ" ID="{ADCF4054-0BEE-4E88-9DF4-1CE505E34D3A}" WorkUnitID="{EE25A93B-E47E-433C-8680-A5F80E78A14B}"/>
@@ -232,6 +235,40 @@
 									<ReferenceList>
 										<Reference Name="Target">
 											<ObjectRef Name="Mom_Bark_Angry" ID="{8E74451F-FA5E-4089-AF92-C0C69A1CDB41}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Mom_Bark_Stop" ID="{54344EC3-9E1F-4858-942D-8E600D63EE2E}">
+							<ChildrenList>
+								<Action Name="" ID="{FDC5BAB3-496E-46D9-95FB-4EF9A48B02B8}" ShortID="13680733">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Mom_Bark_Angry" ID="{8E74451F-FA5E-4089-AF92-C0C69A1CDB41}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{29AC6E33-3CBC-4873-A639-BFED8B8604EB}" ShortID="560876627">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Mom_Bark_Passive" ID="{8E45ADA8-0660-4DAF-B5D2-A11E33472DA2}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+								<Action Name="" ID="{E5815B0D-A786-4305-BB66-85FA40E36C2E}" ShortID="991730548">
+									<PropertyList>
+										<Property Name="ActionType" Type="int16" Value="2"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Mom_Bark_Transition" ID="{8778578D-6269-4768-AA3D-5A91B44D5877}" WorkUnitID="{D66C6BD7-6914-4820-83E0-94E184022666}"/>
 										</Reference>
 									</ReferenceList>
 								</Action>

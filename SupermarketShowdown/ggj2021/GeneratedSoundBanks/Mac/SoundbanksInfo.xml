@@ -15,7 +15,7 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="83829976" Language="English(US)" Hash="2185383042">
+		<SoundBank Id="83829976" Language="English(US)" Hash="2416891624">
 			<ObjectPath>\SoundBanks\Default Work Unit\GGJ2021_SoundBank</ObjectPath>
 			<ShortName>GGJ2021_SoundBank</ShortName>
 			<Path>English(US)\GGJ2021_SoundBank.bnk</Path>
@@ -152,6 +152,7 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="3499760286" Name="Mom_Bark_Stop" ObjectPath="\Events\Default Work Unit\Barks\Mom_Bark_Stop" DurationType="OneShot" DurationMin="0.000000" DurationMax="0.000000"/>
 				<Event Id="2778148779" Name="Mom_Bark_Transition" ObjectPath="\Events\Default Work Unit\Barks\Mom_Bark_Transition" DurationType="OneShot" DurationMin="1.818646" DurationMax="3.106875">
 					<IncludedMemoryFiles>
 						<File Id="111310629" Language="English(US)">
@@ -497,7 +498,7 @@
 				</StateGroup>
 			</StateGroups>
 		</SoundBank>
-		<SoundBank Id="1355168291" Language="SFX" Hash="3793964173">
+		<SoundBank Id="1355168291" Language="SFX" Hash="1496128496">
 			<ObjectPath>Init</ObjectPath>
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>

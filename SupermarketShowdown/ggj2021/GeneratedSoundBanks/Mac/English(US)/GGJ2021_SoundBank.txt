@@ -11,6 +11,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	2932040671	Play_Music			\Default Work Unit\Music\Play_Music	
 	3086540886	STOPALL			\Default Work Unit\Music\STOPALL	
 	3445475436	Place_Item			\Default Work Unit\SFX\Place_Item	
+	3499760286	Mom_Bark_Stop			\Default Work Unit\Barks\Mom_Bark_Stop	
 	3527027211	Throw_Item			\Default Work Unit\SFX\Throw_Item	
 	3866777635	Can_Explode			\Default Work Unit\SFX\Can_Explode	
 	4160144179	Mother_Aggro_False			\Default Work Unit\Music\Mother_Aggro_False	
