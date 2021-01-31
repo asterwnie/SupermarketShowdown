@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             Vector3 targetPos = spawnTargets[i].transform.position;
             float perlinVal = PerlinNoise.GetPerlinValueFromPos(Mathf.RoundToInt(targetPos.x * 100f) , Mathf.RoundToInt(targetPos.y * 100f) , perlinScale); // CAN CURVE IF WE WANT CERTAIN ITEMS ON THE EDGES!!!!???***
             int itemIndexToSpawn = Mathf.FloorToInt(perlinVal * possibleGroceryItems.Count);
-            Debug.Log(perlinVal + " * " + possibleGroceryItems.Count + " = " + (perlinVal * possibleGroceryItems.Count));
+            //Debug.Log(perlinVal + " * " + possibleGroceryItems.Count + " = " + (perlinVal * possibleGroceryItems.Count));
             GameObject spawnedGrocery = Instantiate(possibleGroceryItems[itemIndexToSpawn], groceryItemParent.transform);
             spawnedGrocery.transform.position = spawnTargets[i].transform.position;
             spawnedGrocery.transform.rotation = spawnTargets[i].transform.rotation; // face the right direction so the grocery target is in the right place
