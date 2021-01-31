@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{8EF38823-6206-4556-8182-2E58DEFCBA12}" SchemaVersion="97">
+	<States>
+		<WorkUnit Name="Default Work Unit" ID="{8EF38823-6206-4556-8182-2E58DEFCBA12}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="Mother_Aggro" ID="{0298CE1D-1D3B-4FFE-98FB-E047834E2A6A}">
+					<PropertyList>
+						<Property Name="DefaultTransitionTime" Type="Real64" Value="0.5"/>
+					</PropertyList>
+					<ChildrenList>
+						<State Name="None" ID="{3F81C4F8-8826-4A5F-929D-0E59C88B2A6C}"/>
+						<State Name="Level_1" ID="{BEE4E678-FCCD-40E5-BCD6-DD67C763A768}"/>
+						<State Name="False" ID="{1EF09A06-48B5-4DD9-8366-8C0F08881375}"/>
+						<State Name="Level_2" ID="{6136C008-5D1D-4FBE-A6E5-9A985D42B0F1}"/>
+					</ChildrenList>
+				</StateGroup>
+				<StateGroup Name="Paused" ID="{C25AF0BA-23E5-4F90-8BAC-997B0A39F196}">
+					<PropertyList>
+						<Property Name="DefaultTransitionTime" Type="Real64" Value="0.1"/>
+					</PropertyList>
+					<ChildrenList>
+						<State Name="None" ID="{D1B65308-415D-48C3-84C3-2FAA84C52449}"/>
+						<State Name="True" ID="{25C04FAB-DCDD-4C4E-966D-7B5A1719107D}"/>
+						<State Name="False" ID="{CE2512DE-FA25-4F5F-8D0D-4141DD98F6B3}"/>
+					</ChildrenList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
+	</States>
+</WwiseDocument>
