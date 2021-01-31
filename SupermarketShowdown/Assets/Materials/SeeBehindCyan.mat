@@ -112,7 +112,7 @@ Material:
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 1}
     - _IndirectLightConstColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _OutlineColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-    - _Position: {r: 0.5161793, g: 0.43059784, b: 33.454025, a: 0}
+    - _Position: {r: 0.4998077, g: 0.44048625, b: 33.950455, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &2694994393665360533
 MonoBehaviour:
