@@ -1,0 +1,101 @@
+Event	ID	Name			Wwise Object Path	Notes
+	527419277	Mom_Bark_Passive			\Default Work Unit\Barks\Mom_Bark_Passive	
+	803967661	Player_Eat			\Default Work Unit\SFX\Player_Eat	
+	950830153	Player_Swipe			\Default Work Unit\SFX\Player_Swipe	
+	1104487606	Can_Collide			\Default Work Unit\SFX\Can_Collide	
+	1254491479	Box_Collide			\Default Work Unit\SFX\Box_Collide	
+	1531833962	Squish			\Default Work Unit\SFX\Squish	
+	1898469207	Mom_Grab			\Default Work Unit\SFX\Mom_Grab	
+	2660317557	Mom_Bark_Angry			\Default Work Unit\Barks\Mom_Bark_Angry	
+	2778148779	Mom_Bark_Transition			\Default Work Unit\Barks\Mom_Bark_Transition	
+	2932040671	Play_Music			\Default Work Unit\Music\Play_Music	
+	3086540886	STOPALL			\Default Work Unit\Music\STOPALL	
+	3445475436	Place_Item			\Default Work Unit\SFX\Place_Item	
+	3527027211	Throw_Item			\Default Work Unit\SFX\Throw_Item	
+	3866777635	Can_Explode			\Default Work Unit\SFX\Can_Explode	
+	4160144179	Mother_Aggro_False			\Default Work Unit\Music\Mother_Aggro_False	
+	4245721516	Mother_Aggro_Level_1			\Default Work Unit\Music\Mother_Aggro_Level_1	
+	4245721519	Mother_Aggro_Level_2			\Default Work Unit\Music\Mother_Aggro_Level_2	
+	4281001621	Spill			\Default Work Unit\SFX\Spill	
+
+Dialogue Event	ID	Name			Wwise Object Path	Notes
+	384899132	Play_Mom_Bark			\Default Work Unit\Play_Mom_Bark	
+
+State Group	ID	Name			Wwise Object Path	Notes
+	319258907	Paused			\Default Work Unit\Paused	
+	1849196403	Mother_Aggro			\Default Work Unit\Mother_Aggro	
+
+State	ID	Name	State Group			Notes
+	748895195	None	Paused			
+	2452206122	False	Paused			
+	3053630529	True	Paused			
+	748895195	None	Mother_Aggro			
+	1290008369	Level_1	Mother_Aggro			
+	1290008370	Level_2	Mother_Aggro			
+	2452206122	False	Mother_Aggro			
+
+Custom State	ID	Name	State Group	Owner		Notes
+	15949967	False	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitB		
+	82565179	Level_2	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitB		
+	123395256	Level_2	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\A		
+	126073832	Level_1	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitA		
+	142771496	False	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\C		
+	333290580	Level_2	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitA		
+	342663865	False	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\B		
+	706057990	Level_2	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\C		
+	807547815	Level_2	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\B		
+	950155104	Level_1	Mother_Aggro	\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\C		
+	1069813453	True	Paused	\Interactive Music Hierarchy\Default Work Unit\GGJ		
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	18085452	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_can_collide_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Can_collide\1		44028
+	42607018	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\1		611896
+	47919458	4	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_4_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\4		569908
+	63022305	Throw	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_throw_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Throw		87476
+	77066391	A	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_mx_152t_25m_a_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\A		7882176
+	87055559	hit_B_1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10328_8FAB18CF.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_2\hit_B_1		55224
+	98976997	7	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_7_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\7		387368
+	104163372	B	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_mx_152t_25m_b_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\B		7882176
+	107980921	intial	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\balloon_pop_02_8CC67853.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\intial		49904
+	111310629	4	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_tansition_4_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Transition\4		596584
+	152530578	spill	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_spill_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\spill		166524
+	152710528	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\3		840348
+	174886834	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\2		513332
+	197340674	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_tansition_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Transition\1		349244
+	206016394	hit_3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10327_E2E599C2.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_1\hit_3		68656
+	252768507	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_box_collide_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Box_Collide\1		64604
+	270512914	KitA	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_mx_152t_25m_kit_a_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitA		7882176
+	295759798	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\2		407580
+	298681595	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\1		352008
+	310937892	7	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_7_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\7		485040
+	341115208	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_can_collide_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Can_collide\3		20936
+	379057349	swipe_2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_Swipe_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Swipe\swipe_2		46296
+	383989965	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_box_collide_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Box_Collide\2		51976
+	419245083	hit_1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10327_9C9E9D6C.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_1\hit_1		36648
+	450266225	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_tansition_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Transition\2		419568
+	459836894	swipe_1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_Swipe_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Swipe\swipe_1		52640
+	473577373	KitB	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_mx_152t_25m_kit_b_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\KitB		7882176
+	493483935	hit_2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10327_98B70A07.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_1\hit_2		64372
+	496649833	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\3		371880
+	527465162	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_tansition_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Transition\3		405016
+	557810729	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_can_collide_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Can_collide\2		27640
+	565660703	2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_gremlin_chomp_2_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Eat\2		194444
+	622019356	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_gremlin_chomp_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Eat\3		227420
+	632646573	squish	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_squish_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\squish		66648
+	679328540	6	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_6_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\6		666904
+	708303128	4	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_4_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\4		318328
+	733992733	Pickup	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_pickup_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Pickup		33036
+	741680219	PutDown	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_putdown_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\PutDown		24124
+	806783740	5	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_5_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\5		318328
+	808691299	Hit_B_3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10328_A7240B07.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_2\Hit_B_3		81112
+	892033850	Mom_Grab	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_mom_grab_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Grab		103420
+	927911262	Hit_B_2	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\SodaCanDrop_BW.10328_BBF3D7DB.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\can_explode\Bounces\Bounces_2\Hit_B_2		87492
+	961884756	6	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_angry_6_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Angry\6		912760
+	970319579	3	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_box_collide_3_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Items\Box_Collide\3		48472
+	1019219820	C	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_mx_152t_25m_c_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\GGJ\GGJ\C		7882176
+	1039052494	5	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\Voices\English(US)\ggj2021_sfx_mom_passive_5_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\NPC\Mom_Bark_Passive\5		414316
+	1046593171	1	C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\SFX\ggj2021_sfx_gremlin_chomp_1_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\Player\Eat\1		217924
+
