@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scripts/Ben_Wwise/BenWwiseScenes/Wwise_UpdatedStoreGenerationTest.unity
+- path: Assets/Scenes/UpdatedStoreGenerationTest.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
