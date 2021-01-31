@@ -68,7 +68,7 @@ Material:
     - _Opacity: 0.7
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 3.8866873e-27
+    - _Size: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -81,7 +81,7 @@ Material:
     - _BaseColor: {r: 0.615, g: 0.73345804, b: 1, a: 1}
     - _Color: {r: 0.615, g: 0.73345804, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Position: {r: 0.4998077, g: 0.44048625, b: 33.950455, a: 0}
+    - _Position: {r: 0.50235057, g: 0.4468462, b: 33.98696, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &5623592311478435994
 MonoBehaviour:
