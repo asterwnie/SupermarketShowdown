@@ -7,9 +7,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public bool isFinishedInit = false;
+
     // Objectives & Gamestates ------------------
     public List<GameObject> playerObjectives;
     public List<GameObject> collectedItems;
+    public int objectivesToCollect = 4;
 
     public bool hasWon;
     public bool hasCollectedAllItems;
@@ -43,11 +46,30 @@ public class GameManager : MonoBehaviour
         isChildCaught = false;
         isMomDoneShopping = false;
 
-        // mark all the player objectives so they can use the right texture + spawn particles
-        foreach(GameObject item in playerObjectives)
+        // randomly choose items as objectives
+        
+        GameObject[] groceries = GameObject.FindGameObjectsWithTag("StoreItem");
+        List<int> indiciesUsed = new List<int>();
+        if (groceries.Length < objectivesToCollect)
+            objectivesToCollect = groceries.Length;
+        for (int i = 0; i < objectivesToCollect; i++)
         {
-            item.GetComponent<PickupItem>().isObjective = true;
+            int rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            while (indiciesUsed.Contains(rand))
+            {
+                rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            }
+            indiciesUsed.Add(rand);
+
+            // mark all the player objectives so they can use the right texture + spawn particles
+            playerObjectives.Add(groceries[rand]);
+            groceries[rand].GetComponent<PickupItem>().isObjective = true;
         }
+
+
+
+        // once finished, notify other things to start
+        isFinishedInit = true;
     }
 
     // Update is called once per frame
@@ -61,7 +83,7 @@ public class GameManager : MonoBehaviour
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Movement>().canMove = false;
-            player.GetComponent<PlayerActionManager>().canPerformActions = false;
+
             // If end state has been reached:
             //Debug.Log("Player won: " + hasWon);
             // execute end-game UI...

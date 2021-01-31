@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class MomAIStateMachine : AIStateMachine
 {
-    public GameObject triggerZone;
+    //public GameObject triggerZone;
     public GameObject cartObj;
     public GameObject cartHandle;
+    public int groceriesToCollect = 5;
     public List<GameObject> groceryObjectives = new List<GameObject>();
     public List<GameObject> itemsCollected = new List<GameObject>();
     public LayerMask layerMask;
     public float sightRadius = 30f;
+    public bool canKeepRunning = true;
 
     public GameObject thoughtBubbleUI;
     public Text thoughtBubbleText;
@@ -21,6 +23,24 @@ public class MomAIStateMachine : AIStateMachine
 
     private void Start()
     {
+        //populate grocery list
+        GameObject[] groceries = GameObject.FindGameObjectsWithTag("StoreItem");
+        List<int> indiciesUsed = new List<int>();
+        if (groceries.Length < groceriesToCollect)
+            groceriesToCollect = groceries.Length;
+        for (int i = 0; i < groceriesToCollect; i++)
+        {
+            int rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            while (indiciesUsed.Contains(rand))
+            {
+                rand = Mathf.FloorToInt(Random.value * (groceries.Length - 1));
+            }
+            indiciesUsed.Add(rand);
+
+            if (GameObject.FindGameObjectWithTag("PathfindingGrid").GetComponent<Grid>().NodeFromWorldPoint(groceries[rand].GetComponent<PickupItem>().targetTransform.position).walkable)
+                groceryObjectives.Add(groceries[rand]);
+        }
+
         StartStateMachine();
         playerThoughtBubbleUI.SetActive(false);
         thoughtBubbleUI.SetActive(false);
@@ -42,6 +62,23 @@ public class MomAIStateMachine : AIStateMachine
         {
             currentState = AIStates.IDLE;
         }
+
+        // if the player's done, the mom should go to the cart
+        if(canKeepRunning && GameManager.instance.hasCollectedAllItems)
+        {
+            canKeepRunning = false; // stop the state machine
+
+            currentStateObject.isInited = false;
+            currentStateObject = null;
+            //currentState = AIStates.CHECKOUT;
+
+            GameManager.instance.isMomDoneShopping = true;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().canMove = false;
+
+            var nextState = gameObject.AddComponent<PursueState>();
+            nextState.stateMachine = this;
+            currentStateObject = nextState;
+        }
         
     }
 
@@ -56,7 +93,7 @@ public class MomAIStateMachine : AIStateMachine
 
     private void OnTriggerEnter(Collider other)
     {
-        if(currentStateObject != null)
+        if (currentStateObject != null)
             currentStateObject.OnTriggerAction(other);
     }
 
@@ -118,7 +155,7 @@ public class ShoppingState : AIState
         if(!isWalking)
         {
             isWalking = true;
-            GetComponent<PathfindingUnit>().PathTo(currentTarget.transform);
+            GetComponent<PathfindingUnit>().PathTo(currentTarget.GetComponent<PickupItem>().targetTransform);
         }
 
         // if moving onto a next state, return a new state
@@ -234,21 +271,12 @@ public class InspectingState : AIState
             }
             
         }
-
         // if continuing this state, return itself
         return this;
     }
 
-    public override void OnTriggerAction(Collider other)
-    {
-        
-    }
-
-    public override void OnTriggerStayAction(Collider other)
-    {
-
-    }
-
+    public override void OnTriggerAction(Collider other) { }
+    public override void OnTriggerStayAction(Collider other) { }
 }
 
 public class PursueState : AIState
@@ -305,7 +333,7 @@ public class PursueState : AIState
     {
         timeRunning += Time.deltaTime;
 
-        if(caughtPlayer)
+        if(caughtPlayer || GameManager.instance.hasCollectedAllItems) // if the player is caught or has collected everything
         {
             if (GameManager.instance.isChildEatInstantly)
                 GameManager.instance.isChildCaught = true;
@@ -326,10 +354,8 @@ public class PursueState : AIState
                 //OnExit();
 
                 // keep shopping if not done; if not, enter lose state
-                if (((MomAIStateMachine)stateMachine).itemsCollected.Count != ((MomAIStateMachine)stateMachine).groceryObjectives.Count)
+                if (!GameManager.instance.hasCollectedAllItems && ((MomAIStateMachine)stateMachine).itemsCollected.Count != ((MomAIStateMachine)stateMachine).groceryObjectives.Count)
                 {
-                    
-
                     OnExit();
                     var nextState = gameObject.AddComponent<InspectingState>();
                     nextState.stateMachine = this.stateMachine;

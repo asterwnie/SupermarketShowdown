@@ -49,7 +49,6 @@ public class PlayerActionManager : MonoBehaviour
     [Header("Item Pickups")]
     public List<GameObject> nearbyItems; // pickup items will add themselves to this list in their OnTriggerEnter and remove when exiting
     bool isHoldingItem = false;
-    public GameObject currentWeapon;
 
     // Start is called before the first frame update
     void Start()
@@ -145,17 +144,6 @@ public class PlayerActionManager : MonoBehaviour
                 float timeElapsed = 0;
                 StartCoroutine(DropOrThrowItem(KeyCode.Mouse1, timeElapsed));
                 break;
-
-                /*
-            case PlayerActions.ATTACK:
-                // make sure player isn't holding anything
-                // check what kind of weapon it is
-                // execute action/animation depending on the weapon
-                break;
-            case PlayerActions.EQUIP:
-                // play equip animation
-                // set correct idle animation
-                break;*/
         }
     }
 
@@ -168,6 +156,7 @@ public class PlayerActionManager : MonoBehaviour
         {
             currentHeldItem.GetComponent<Collider>().enabled = true;
             currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
+            currentHeldItem.GetComponent<Rigidbody>().AddForce(new Vector3(0, 5f, 0)); // bounce it up a little
         }
 
         // store this item as player holded item
@@ -248,7 +237,7 @@ public class PlayerActionManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PickupItem")
+        if (other.tag == "PickupItem" || other.tag == "StoreItem")
         {
             nearbyItems.Add(other.gameObject);
         }
@@ -256,7 +245,7 @@ public class PlayerActionManager : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "PickupItem")
+        if(other.tag == "PickupItem" || other.tag == "StoreItem")
         {
             nearbyItems.Remove(other.gameObject);
         }

@@ -6,7 +6,7 @@ public class Cart : MonoBehaviour
 {
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "PickupItem")
+        if (other.tag == "PickupItem" || other.tag == "StoreItem")
         {
             if(!GameManager.instance.isChildEatInstantly && other.GetComponent<PickupItem>().isObjective)
             {

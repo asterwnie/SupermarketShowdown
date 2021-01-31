@@ -9,6 +9,9 @@ TagManager:
   - PatrolPoints
   - MomNPC
   - Cart
+  - StoreItem
+  - StoreItemTarget
+  - PathfindingGrid
   layers:
   - Default
   - TransparentFX
