@@ -28,6 +28,9 @@ public class MomAIStateMachine : AIStateMachine
     public GameObject playerThoughtBubbleUI;
     public Text playerThoughtBubbleText;
 
+    public float barkFrequency = 11f;
+    float timeElapsed = 0;
+
     private void Start()
     {
         // init is delayed (see Update())
@@ -104,8 +107,9 @@ public class MomAIStateMachine : AIStateMachine
                 nextState.stateMachine = this;
                 currentStateObject = nextState;
             }
+
         }
-        
+
         
     }
 
@@ -247,6 +251,9 @@ public class InspectingState : AIState
 
     private void Start()
     {
+        AkSoundEngine.PostEvent("Stop_Barks", gameObject);
+        AkSoundEngine.PostEvent("Mom_Bark_Passive", gameObject);
+
         ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Thinking");
         type = AIStates.THINKING;
         timeElapsed = 0;
@@ -328,8 +335,13 @@ public class PursueState : AIState
     public float timeRunning;
     public float maxTimeRunning = 7f; // how long the mom will pursue before getting tired
 
+    public bool started = false;
+
     private void Start()
     {
+        AkSoundEngine.PostEvent("Stop_Barks", gameObject);
+        AkSoundEngine.PostEvent("Mom_Bark_Angry", gameObject);
+
         ((MomAIStateMachine)stateMachine).animationController.SetTrigger("Running");
         type = AIStates.PURSUE;
         caughtPlayer = false;
@@ -533,6 +545,9 @@ public class PatrolState : AIState
 
     private void Start()
     {
+        AkSoundEngine.PostEvent("Stop_Barks", gameObject);
+        AkSoundEngine.PostEvent("Mom_Bark_Transition", gameObject);
+
         type = AIStates.PATROL;
         patrolPoints = GameObject.FindGameObjectsWithTag("PatrolPoints");
         pathfindingUnit = GetComponent<PathfindingUnit>();

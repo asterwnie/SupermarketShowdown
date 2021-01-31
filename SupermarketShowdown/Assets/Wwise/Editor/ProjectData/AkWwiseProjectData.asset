@@ -68,7 +68,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 7452f9b723a9334ea52b7637e9e307e0
     GuidInternal: 
-    m_lastTime: -8585894867536666756
+    m_lastTime: -8585894770971547466
     List:
     - name: Barks
       guid: 7dd1e2abb5de7c4da21d6d09e08642aa
@@ -330,6 +330,20 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0.346792
       minDuration: 0.346792
+    - name: Stop_Barks
+      guid: 1d085153a2551544981c780a7a5e3740
+      id: 3642769857
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Barks
+        ObjectType: 4
+      - ElementName: Stop_Barks
+        ObjectType: 3
+      Path: Default Work Unit\Barks\Stop_Barks
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
     - name: STOPALL
       guid: 39433d0b07d5134a9143c662e35b6463
       id: 3086540886
@@ -376,7 +390,7 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: 2388f38e0662564581822e58defcba12
     GuidInternal: 
-    m_lastTime: -8585894867432675057
+    m_lastTime: -8585894770964115809
     List:
     - name: Mother_Aggro
       guid: 1dce98023b1dfe4f98fbe047834e2a6a
@@ -469,5 +483,8 @@ MonoBehaviour:
   ExpandedItems:
   - /ggj2021
   - /ggj2021/Events
+  - /ggj2021/Events/Default Work Unit
+  - /ggj2021/Events/Default Work Unit/Barks
+  - /ggj2021/Events/Default Work Unit/Music
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

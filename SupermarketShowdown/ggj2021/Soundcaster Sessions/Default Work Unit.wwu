@@ -18,8 +18,16 @@
 							<Position X="1" Y="0"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="Mom_Bark_Angry" ID="{5F2D728B-06B5-4232-A3FB-C690F7CA25C3}" WorkUnitID="{B7F95274-A923-4E33-A52B-7637E9E307E0}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="Play_Music" ID="{44551C1E-E61F-4297-A156-2E0A1D8C7573}" WorkUnitID="{B7F95274-A923-4E33-A52B-7637E9E307E0}"/>
 							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Stop_Barks" ID="{5351081D-55A2-4415-981C-780A7A5E3740}" WorkUnitID="{B7F95274-A923-4E33-A52B-7637E9E307E0}"/>
+							<Position X="2" Y="1"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="STOPALL" ID="{0B3D4339-D507-4A13-9143-C662E35B6463}" WorkUnitID="{B7F95274-A923-4E33-A52B-7637E9E307E0}"/>

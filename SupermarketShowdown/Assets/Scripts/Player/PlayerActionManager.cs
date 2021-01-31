@@ -123,6 +123,8 @@ public class PlayerActionManager : MonoBehaviour
                 if(!isHoldingItem && nearbyItems.Count > 0) // if there are pickupable items nearby
                 {
                     HoldItem(nearbyItems[0]);
+
+                    AkSoundEngine.PostEvent("Place_Item", gameObject);
                 }
                 else if (isHoldingItem) // drop the item
                 {
@@ -197,7 +199,7 @@ public class PlayerActionManager : MonoBehaviour
                     if (Input.GetKeyUp(KeyCode.Mouse0))
                     {
                         // calculations for throw force are done in update
-
+                        AkSoundEngine.PostEvent("Throw_Item", gameObject);
                         currentHeldItem.GetComponent<Collider>().enabled = true;
                         currentHeldItem.transform.position = player.transform.position + new Vector3(0, playerHeight, 0); // place in front of player
                         isHoldingItem = false;
@@ -218,6 +220,7 @@ public class PlayerActionManager : MonoBehaviour
                     currentHeldItem.GetComponent<Collider>().enabled = true;
                     currentHeldItem.transform.position = player.transform.position + player.transform.forward * 2.5f + new Vector3(0, playerHeight, 0); // place in front of player
                     currentHeldItem.GetComponent<Rigidbody>().AddForce(new Vector3(0, 5f, 0)); // bounce it up a little
+                    AkSoundEngine.PostEvent("Player_Swipe", gameObject);
 
                     // un-store this item as player holded item
                     isHoldingItem = false;
