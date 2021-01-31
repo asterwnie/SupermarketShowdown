@@ -120,7 +120,7 @@ public class PlayerActionManager : MonoBehaviour
         switch (action)
         {
             case PlayerActions.PICKUP:
-                if(nearbyItems.Count > 0) // if there are pickupable items nearby
+                if(!isHoldingItem && nearbyItems.Count > 0) // if there are pickupable items nearby
                 {
                     HoldItem(nearbyItems[0]);
                 }

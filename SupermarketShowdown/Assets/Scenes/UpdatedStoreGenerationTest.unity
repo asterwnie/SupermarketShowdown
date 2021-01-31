@@ -4188,7 +4188,7 @@ PrefabInstance:
     - target: {fileID: 8770470135613389089, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: wallMaterial.Array.size
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8770470135613389089, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
@@ -4199,12 +4199,12 @@ PrefabInstance:
         type: 3}
       propertyPath: wallMaterial.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: 24bae6964ebac644a889998ec02844fb, type: 2}
+      objectReference: {fileID: 2100000, guid: fe9ca33bae1f44d4fa95f37710aea211, type: 2}
     - target: {fileID: 8770470135613389089, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: wallMaterial.Array.data[4]
       value: 
-      objectReference: {fileID: 2100000, guid: f2fd3940fc82ac84abfef483066d31e4, type: 2}
+      objectReference: {fileID: 2100000, guid: c36d8b99b489d1743bd6ebecd57e3a27, type: 2}
     - target: {fileID: 8770470135613389089, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: wallMaterial.Array.data[5]
@@ -4230,6 +4230,11 @@ PrefabInstance:
       propertyPath: circleLerpValue
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8770470135613389089, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
+        type: 3}
+      propertyPath: wallMaterial.Array.data[8]
+      value: 
+      objectReference: {fileID: 2100000, guid: c36d8b99b489d1743bd6ebecd57e3a27, type: 2}
     - target: {fileID: 8770470136364725796, guid: 425e86bb0f6659b44a62c0c3ecf0f73c,
         type: 3}
       propertyPath: m_Camera
