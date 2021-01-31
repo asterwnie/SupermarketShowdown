@@ -12,6 +12,8 @@ TagManager:
   - StoreItem
   - StoreItemTarget
   - PathfindingGrid
+  - GrocerySpawnTarget
+  - Environment
   layers:
   - Default
   - TransparentFX
@@ -26,7 +28,7 @@ TagManager:
   - NPC
   - Player
   - Cart
-  - Objective
+  - StoreItem
   - 
   - 
   - 

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class MomAIStateMachine : AIStateMachine
 {
+    bool aiIsInitted;
+    bool canInit;
+
     //public GameObject triggerZone;
     public GameObject cartObj;
     public GameObject cartHandle;
@@ -23,6 +26,14 @@ public class MomAIStateMachine : AIStateMachine
 
     private void Start()
     {
+        // init is delayed (see Update())
+
+        playerThoughtBubbleUI.SetActive(false);
+        thoughtBubbleUI.SetActive(false);
+    }
+
+    void PopulateGroceryList()
+    {
         //populate grocery list
         GameObject[] groceries = GameObject.FindGameObjectsWithTag("StoreItem");
         List<int> indiciesUsed = new List<int>();
@@ -40,45 +51,57 @@ public class MomAIStateMachine : AIStateMachine
             if (GameObject.FindGameObjectWithTag("PathfindingGrid").GetComponent<Grid>().NodeFromWorldPoint(groceries[rand].GetComponent<PickupItem>().targetTransform.position).walkable)
                 groceryObjectives.Add(groceries[rand]);
         }
-
-        StartStateMachine();
-        playerThoughtBubbleUI.SetActive(false);
-        thoughtBubbleUI.SetActive(false);
     }
 
     private void Update()
     {
+        if (!aiIsInitted && GameManager.instance.isFinishedInit)
+        {
+            aiIsInitted = true;
+            canInit = true;
+        }
+
+        if (canInit)
+        {
+            canInit = false; // don't init twice
+            PopulateGroceryList();
+            StartStateMachine();
+        }
+
+        if(aiIsInitted)
+        {
+            GameManager.instance.momAIState = currentState;
+
+            if (currentStateObject != null)
+            {
+                currentState = currentStateObject.GetStateType();
+
+                if (currentStateObject.isInited)
+                    currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
+            }
+            else
+            {
+                currentState = AIStates.IDLE;
+            }
+
+            // if the player's done, the mom should go to the cart
+            if (canKeepRunning && GameManager.instance.hasCollectedAllItems)
+            {
+                canKeepRunning = false; // stop the state machine
+
+                currentStateObject.isInited = false;
+                currentStateObject = null;
+                //currentState = AIStates.CHECKOUT;
+
+                GameManager.instance.isMomDoneShopping = true;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().canMove = false;
+
+                var nextState = gameObject.AddComponent<PursueState>();
+                nextState.stateMachine = this;
+                currentStateObject = nextState;
+            }
+        }
         
-        GameManager.instance.momAIState = currentState;
-
-        if (currentStateObject != null)
-        {
-            currentState = currentStateObject.GetStateType();
-
-            if (currentStateObject.isInited)
-                currentStateObject = currentStateObject.UpdateState(); // will return a new state if the state changes
-        }
-        else
-        {
-            currentState = AIStates.IDLE;
-        }
-
-        // if the player's done, the mom should go to the cart
-        if(canKeepRunning && GameManager.instance.hasCollectedAllItems)
-        {
-            canKeepRunning = false; // stop the state machine
-
-            currentStateObject.isInited = false;
-            currentStateObject = null;
-            //currentState = AIStates.CHECKOUT;
-
-            GameManager.instance.isMomDoneShopping = true;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>().canMove = false;
-
-            var nextState = gameObject.AddComponent<PursueState>();
-            nextState.stateMachine = this;
-            currentStateObject = nextState;
-        }
         
     }
 
