@@ -13,4 +13,15 @@ public class ChangeScene : MonoBehaviour
     {
         SceneManager.LoadScene(targetScene);
     }
+
+    public void LoadAfterDelay()
+    {
+        StartCoroutine(Delay());
+    }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(targetScene);
+    }
 }

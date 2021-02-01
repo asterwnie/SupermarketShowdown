@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SoundBanksInfo Platform="Mac" BasePlatform="Mac" SchemaVersion="12" SoundbankVersion="135">
 	<RootPaths>
-		<ProjectRoot>C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\</ProjectRoot>
-		<SourceFilesRoot>C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\</SourceFilesRoot>
-		<SoundBanksRoot>C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\GeneratedSoundBanks\Mac\</SoundBanksRoot>
+		<ProjectRoot>C:\Users\miche\Documents\SupermarketShowdown\Test\SupermarketShowdown\SupermarketShowdown\ggj2021\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\miche\Documents\SupermarketShowdown\Test\SupermarketShowdown\SupermarketShowdown\ggj2021\.cache\Mac\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\miche\Documents\SupermarketShowdown\Test\SupermarketShowdown\SupermarketShowdown\ggj2021\GeneratedSoundBanks\Mac\</SoundBanksRoot>
 		<ExternalSourcesInputFile></ExternalSourcesInputFile>
-		<ExternalSourcesOutputRoot>C:\Users\Ben\OneDrive\Documents\GitHub\SupermarketShowdown\SupermarketShowdown\ggj2021\GeneratedSoundBanks\Mac</ExternalSourcesOutputRoot>
+		<ExternalSourcesOutputRoot>C:\Users\miche\Documents\SupermarketShowdown\Test\SupermarketShowdown\SupermarketShowdown\ggj2021\GeneratedSoundBanks\Mac</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<DialogueEvents>
 		<DialogueEvent Id="384899132" Name="Play_Mom_Bark" ObjectPath="\Dynamic Dialogue\Default Work Unit\Play_Mom_Bark">
@@ -15,7 +15,7 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="83829976" Language="English(US)" Hash="2416891624">
+		<SoundBank Id="83829976" Language="English(US)" Hash="856040620">
 			<ObjectPath>\SoundBanks\Default Work Unit\GGJ2021_SoundBank</ObjectPath>
 			<ShortName>GGJ2021_SoundBank</ShortName>
 			<Path>English(US)\GGJ2021_SoundBank.bnk</Path>

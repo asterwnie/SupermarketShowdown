@@ -7,6 +7,7 @@ public class MomAIStateMachine : AIStateMachine
 {
     bool aiIsInitted;
     bool canInit;
+    [HideInInspector] public static bool isReachedCartForFirstTime = false;
 
     //public GameObject triggerZone;
     public Animator animationController;
@@ -401,6 +402,7 @@ public class PursueState : AIState
 
             if (Vector3.Distance(gameObject.transform.position, ((MomAIStateMachine)stateMachine).cartObj.transform.position) < 3f)
             {
+                MomAIStateMachine.isReachedCartForFirstTime = true;
                 //pathfindingUnit.speed /= 1.5f;
                 StartCoroutine(GivePlayerControlAfterDelay(6f));
                 //OnExit();
@@ -512,7 +514,8 @@ public class PursueState : AIState
         while (timeElapsed < seconds)
         {
             timeElapsed += Time.deltaTime;
-            if(timeElapsed > seconds - (seconds - 1.5f))
+            player.GetComponent<Movement>().canMove = false;
+            if (timeElapsed > seconds - (seconds - 1.5f))
             {
                 Quaternion lookAtCartAngle = Quaternion.LookRotation(new Vector3(((MomAIStateMachine)stateMachine).cartObj.transform.position.x, player.transform.position.y, ((MomAIStateMachine)stateMachine).cartObj.transform.position.z) - player.transform.position, Vector3.up);
                 player.transform.rotation = Quaternion.Lerp(player.transform.rotation, lookAtCartAngle, Time.deltaTime * 2f);

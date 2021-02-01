@@ -61,6 +61,14 @@ public class GameManager : MonoBehaviour
 
 
         // once finished, notify other things to start
+        StartCoroutine(FinishInitAfterDelay(2f));
+
+
+    }
+
+    IEnumerator FinishInitAfterDelay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
         isFinishedInit = true;
     }
 
@@ -203,6 +211,7 @@ public class GameManager : MonoBehaviour
         bool hasReachedCart = false;
         while(!hasReachedCart)
         {
+            Debug.Log(Vector3.Distance(mom.transform.position, cart.transform.position));
             if(Vector3.Distance(mom.transform.position, cart.transform.position) < 5.5f && Vector3.Distance(player.transform.position, cart.transform.position) < 5.5f)
             {
                 //Debug.Log("Mom and child reached cart.");

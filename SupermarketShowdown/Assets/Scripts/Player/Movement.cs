@@ -16,7 +16,7 @@ public class Movement : MonoBehaviour
 
     public bool isPushing;
 
-    Animator animator;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +42,8 @@ public class Movement : MonoBehaviour
 
     void MoveHorizontal()
     {
+
+
         if(canMove)// && !CanvasManager.isPaused)
         {
             // collect inputs
@@ -58,14 +60,17 @@ public class Movement : MonoBehaviour
                 if(Input.GetKey(KeyCode.LeftShift))
                 {
                     // running
-                    //animator.SetBool("isSprinting", true); // do running anim if shift is down
+                    animator.SetTrigger("Running"); // do running anim if shift is down
                     transform.Translate(isoRotate * Time.deltaTime * moveSpeed * 3/2, Space.World);
                     //transform.Translate(inputMovement * Time.deltaTime * moveSpeed * 3 / 2, Space.World);
                 }
                 else
                 {
                     // walking
-                    //animator.SetBool("isSprinting", false); // turn off running is shift is not down
+                    if(inputMovement.magnitude > 0.1f || GetComponent<PathfindingUnit>().isPathing)
+                        animator.SetTrigger("Walking"); 
+                    else
+                        animator.SetTrigger("Idle");
                     transform.Translate(isoRotate * Time.deltaTime * moveSpeed, Space.World);
                     //transform.Translate(inputMovement * Time.deltaTime * moveSpeed, Space.World);
                 }

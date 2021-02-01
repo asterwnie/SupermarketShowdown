@@ -15,6 +15,8 @@ public class PathfindingUnit : MonoBehaviour
     public float turnDst = 1;
     public float stoppingDst = 1;
 
+    public bool isPathing = false;
+
     Path path;
 
     void Start()
@@ -26,11 +28,13 @@ public class PathfindingUnit : MonoBehaviour
     {
         target = targetObj;
         PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        isPathing = true;
         //StartCoroutine(UpdatePath());
     }
 
     public void ForceStopPathing()
     {
+        isPathing = false;
         StopCoroutine("FollowPath");
         StopCoroutine("UpdatePath");
         path = null;
@@ -92,6 +96,7 @@ public class PathfindingUnit : MonoBehaviour
                 if (pathIndex == path.finishLineIndex)
                 {
                     followingPath = false;
+                    isPathing = false;
                     break;
                 }
                 else
@@ -109,6 +114,7 @@ public class PathfindingUnit : MonoBehaviour
                     if (speedPercent < 0.01f)
                     {
                         followingPath = false;
+                        isPathing = false;
                     }
                 }
 

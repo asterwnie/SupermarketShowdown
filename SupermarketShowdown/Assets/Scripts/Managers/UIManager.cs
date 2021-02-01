@@ -5,21 +5,37 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public ScreenTransitions screenTransition;
+    bool hasTransitioned = false;
+
     public Text momStateText;
     public Text itemsCollectedText;
+
+    public Movement player;
+    public PlayerActionManager playerActionManager;
 
     public GameObject endScreenPanel;
     public Text endResultText;
 
+    public GameObject pauseMenuPanel;
+    bool canGiveControlToPlayer = false;
 
     private void Start()
     {
         endScreenPanel.SetActive(false);
+        pauseMenuPanel.SetActive(false);
+        screenTransition.ShowBlack();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!hasTransitioned && GameManager.instance.isFinishedInit)
+        {
+            hasTransitioned = true;
+            screenTransition.FadeFromBlack();
+        }
+
         string momStateString = "";
         switch(GameManager.instance.momAIState)
         {
@@ -40,5 +56,24 @@ public class UIManager : MonoBehaviour
             else
                 endResultText.text = "You lost...";
         }
+
+        if(pauseMenuPanel.activeInHierarchy || endScreenPanel.activeInHierarchy)
+        {
+            player.canMove = false;
+            playerActionManager.canPerformActions = false;
+            canGiveControlToPlayer = true;
+        }
+        else if (!endScreenPanel.activeInHierarchy && canGiveControlToPlayer)
+        {
+            canGiveControlToPlayer = false;
+            player.canMove = true;
+            playerActionManager.canPerformActions = true;
+        }
+
+    }
+
+    public void TogglePauseScreen()
+    {
+        pauseMenuPanel.SetActive(!pauseMenuPanel.activeInHierarchy);
     }
 }

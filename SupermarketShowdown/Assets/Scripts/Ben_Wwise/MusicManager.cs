@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    /*
+    public static MusicManager instance;
+
+    // singleton setup
+    private void Awake()
     {
-        
-    }
+        if (instance != null) // if an instance already exists, destroy this (and use the other one instead)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -23,7 +34,7 @@ public class MusicManager : MonoBehaviour
             AkSoundEngine.SetState("Mother_Aggro", "Level_1");
         }
 
-        if (GameManager.instance.momAIState == AIStates.PURSUE)
+        if (GameManager.instance.momAIState == AIStates.PURSUE && MomAIStateMachine.isReachedCartForFirstTime)
         {
             AkSoundEngine.SetState("Mother_Aggro", "Level_2");
         }
